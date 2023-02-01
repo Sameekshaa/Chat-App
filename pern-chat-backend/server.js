@@ -3,7 +3,8 @@ const app = express();
 const userRoutes = require("./routes/userRoutes");
 const rooms = ["General", "Fullstack", "Data", "AI"];
 const cors = require("cors");
-const { default: knex } = require("knex");
+const { knex } = require("./config/db/index");
+// const { default: knex } = require("knex");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -23,13 +24,13 @@ const io = require("socket.io")(server, {
     methods: ["GET", "POST"],
   },
 });
-
-// Message.aggregate
 async function getLastMessagesFromRoom(room) {
-  let roomMessages = await Message.aggregate([
-    { $match: { to: room } },
-    { $group: { id: "$date", messagesByDate: { $push: "$$ROOT" } } },
-  ]);
+  let roomMessages = await knex
+    .select()
+    .from(MESSAGE_TABLE_NAME)
+    .where({ to: room })
+    .orderBy("date", "asc");
+
   return roomMessages;
 }
 
