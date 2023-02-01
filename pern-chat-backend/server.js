@@ -1,11 +1,11 @@
 const express = require("express");
 const app = express();
 const userRoutes = require("./routes/userRoutes");
-const rooms = ["General", "Fullstack", "Data", "AI"];
+const rooms = [ "General", "Fullstack", "Data", "AI" ];
 const cors = require("cors");
-const { default: knex } = require("knex");
+const {default : knex} = require("knex");
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended : true}));
 app.use(express.json());
 app.use(cors());
 
@@ -17,24 +17,24 @@ const MESSAGE_TABLE_NAME = "messages";
 const server = require("http").createServer(app);
 const PORT = 5001;
 const io = require("socket.io")(server, {
-  cors: {
-    origin: "http://localhost:3000",
+  cors : {
+    origin : "http://localhost:3000",
     // origin: 'https://chat-app-backend-bwff.onrender.com',
-    methods: ["GET", "POST"],
+    methods : [ "GET", "POST" ],
   },
 });
 
 // Message.aggregate
 async function getLastMessagesFromRoom(room) {
   let roomMessages = await Message.aggregate([
-    { $match: { to: room } },
-    { $group: { id: "$date", messagesByDate: { $push: "$$ROOT" } } },
+    {$match : {to : room}},
+    {$group : {id : "$date", messagesByDate : {$push : "$$ROOT"}}},
   ]);
   return roomMessages;
 }
 
 function sortRoomMessagesByDate(messages) {
-  return messages.sort(function (a, b) {
+  return messages.sort(function(a, b) {
     let date1 = a.id.split("/");
     let date2 = b.id.split("/");
 
@@ -64,10 +64,10 @@ io.on("connection", (socket) => {
   socket.on("message-room", async (room, content, sender, time, date) => {
     const newMessage = await knex(MESSAGE_TABLE_NAME).insert({
       content,
-      from: sender,
+      from : sender,
       time,
       date,
-      to: room,
+      to : room,
     });
 
     let roomMessages = await getLastMessagesFromRoom(room);
@@ -80,15 +80,14 @@ io.on("connection", (socket) => {
   app.delete("/logout", async (req, res) => {
     console.log(req.body);
     try {
-      const { id, newMessages } = req.body;
-      await knex(USER_TABLE_NAME).where({ id: id }).update({
-        status: "offline",
-        newMessages: newMessages,
+      const {id, newMessages} = req.body;
+      await knex(USER_TABLE_NAME).where({id : id}).update({
+        status : "offline",
+        newMessages : newMessages,
       });
       // const members = await User.find();
-      const members = await knex(USER_TABLE_NAME).select(
-        `${USER_TABLE_NAME}.*`
-      );
+      const members =
+          await knex(USER_TABLE_NAME).select(`${USER_TABLE_NAME}.*`);
       socket.broadcast.emit("new-user", members);
       res.status(200).send();
     } catch (e) {
@@ -98,19 +97,13 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get("/rooms", (req, res) => {
-  res.json(rooms);
-});
+app.get("/rooms", (req, res) => { res.json(rooms); });
 
-server.listen(PORT, () => {
-  console.log("listening to port", PORT);
-});
+server.listen(PORT, () => { console.log("listening to port", PORT); });
 
-//unhandled promise rejetcion
+// unhandled promise rejetcion
 process.on("unhandledRejection", (err) => {
   console.log(`Error: ${err.message}`);
   console.log("Shutting down server  ");
-  server.close(() => {
-    process.exit(1);
-  });
+  server.close(() => { process.exit(1); });
 });
