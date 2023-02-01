@@ -106,7 +106,7 @@ server.listen(PORT, () => {
   console.log("listening to port", PORT);
 });
 
-//unhandled promise rejetcion
+// unhandled promise rejetcion
 process.on("unhandledRejection", (err) => {
   console.log(`Error: ${err.message}`);
   console.log("Shutting down server  ");
