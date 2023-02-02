@@ -39,7 +39,7 @@ router.post("/login", async (req, res) => {
       throw new Error("User not found");
     }
     await knex("users").where({ email }).update({ status: "online" });
-    res.status(200).json(user);
+    res.status(200).json({ user });
   } catch (e) {
     console.log(e);
     res.status(400).json(e.message);
