@@ -9,6 +9,7 @@ function MessageForm() {
   const { socket, currentRoom, setMessages, messages, privateMemberMsg } =
     useContext(AppContext);
   console.log("messages from MessageForm.js", messages);
+  //  console.log("user in msg form", user);
   const messageEndRef = useRef(null);
   useEffect(() => {
     scrollToBottom();
@@ -45,9 +46,21 @@ function MessageForm() {
       today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
     const time = today.getHours() + ":" + minutes;
     const roomId = currentRoom;
-    const userId = user["user"][0].id;
-    console.log("user ======", user["user"][0].id);
+
+    const userId = user.id;
     socket.emit("message-room", roomId, message, userId, time, todayDate);
+
+    setMessages((current) => [
+      ...current,
+      {
+        room: roomId,
+        content: message,
+        from: user,
+        time: time,
+        date: todayDate,
+      },
+    ]);
+
     // user.[0].id;
     setMessage("");
   }
@@ -76,44 +89,47 @@ function MessageForm() {
         {!user && <div className="alert alert-danger">Please login</div>}
 
         {user &&
-          messages.map(({ date, messagesByDate }, idx) => (
-            <div key={idx}>
-              <p className="alert alert-info text-center message-date-indicator">{date}</p>
-              {messagesByDate?.map(
-                ({ content, time, from: sender }, msgIdx) => (
-                  <div
-                    className={
-                      sender?.email === user?.email
-                        ? "message"
-                        : "incoming-message"
-                    }
-                    key={msgIdx}
-                  >
-                    <div className="message-inner">
-                      <div className="d-flex align-items-center mb-3">
-                        <img
-                          src={sender.picture}
-                          style={{
-                            width: 35,
-                            height: 35,
-                            objectFit: "cover",
-                            borderRadius: "50%",
-                            marginRight: 10,
-                          }}
-                          alt="sender-pic"
-                        />
-                        <p className="message-sender">
-                          {sender.id === user?.id ? "You" : sender.name}
-                        </p>
-                      </div>
-                      <p className="message-content">{content}</p>
-                      <p className="message-timestamp-left">{time}</p>
+          messages.map(({ date, content, time, from: sender }, idx) => {
+            const hideDate = idx > 0 && date === messages[idx - 1].date;
+            return (
+              <div key={idx}>
+                {!hideDate && (
+                  <p className="alert alert-info text-center message-date-indicator">
+                    {date}
+                  </p>
+                )}
+
+                <div
+                  className={
+                    sender?.email === user?.email
+                      ? "message"
+                      : "incoming-message"
+                  }
+                >
+                  <div className="message-inner">
+                    <div className="d-flex align-items-center mb-3">
+                      <img
+                        src={sender.picture}
+                        style={{
+                          width: 35,
+                          height: 35,
+                          objectFit: "cover",
+                          borderRadius: "50%",
+                          marginRight: 10,
+                        }}
+                        alt="sender-pic"
+                      />
+                      <p className="message-sender">
+                        {sender.id === user?.id ? "You" : sender.name}
+                      </p>
                     </div>
+                    <p className="message-content">{content}</p>
+                    <p className="message-timestamp-left">{time}</p>
                   </div>
-                )
-              )}
-            </div>
-          ))}
+                </div>
+              </div>
+            );
+          })}
         <div ref={messageEndRef} />
       </div>
       <Form onSubmit={handleSubmit}>
