@@ -45,7 +45,9 @@ function MessageForm() {
       today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
     const time = today.getHours() + ":" + minutes;
     const roomId = currentRoom;
-    socket.emit("message-room", roomId, message, user[0].id, time, todayDate);
+    const userId = user["user"][0].id;
+    console.log("user ======", user["user"][0].id);
+    socket.emit("message-room", roomId, message, userId, time, todayDate);
     // user.[0].id;
     setMessage("");
   }
@@ -74,9 +76,9 @@ function MessageForm() {
         {!user && <div className="alert alert-danger">Please login</div>}
 
         {user &&
-          messages.map(({ id: date, messagesByDate }, idx) => (
+          messages.map(({ date, messagesByDate }, idx) => (
             <div key={idx}>
-              {/* <p className="alert alert-info text-center message-date-indicator">{date}</p> */}
+              <p className="alert alert-info text-center message-date-indicator">{date}</p>
               {messagesByDate?.map(
                 ({ content, time, from: sender }, msgIdx) => (
                   <div
