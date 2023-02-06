@@ -7,7 +7,7 @@ exports.up = function (knex) {
     .createTable("messages", (table) => {
       table.increments("id").primary();
       table.text("content");
-      table.json("from");
+      table.string("from");
       table.string("socketid");
       table.string("time");
       table.string("date");
