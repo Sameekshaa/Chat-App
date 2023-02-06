@@ -22,6 +22,7 @@ function Sidebar() {
   } = useContext(AppContext);
 
   console.log("socket", socket); //socket connection
+  // console.log("members", members);
 
   function joinRoom(room, isPublic = true) {
     if (!user) {
@@ -43,9 +44,9 @@ function Sidebar() {
 
   useEffect(() => {
     if (user) {
-      setCurrentRoom("general");
+      setCurrentRoom("General");
       getRooms();
-      socket.emit("join-room", "general");
+      socket.emit("join-room", "General");
       socket.emit("new-user");
     }
   }, []);
@@ -60,7 +61,7 @@ function Sidebar() {
       .then((res) => res.json())
       .then((data) => setRooms(data));
   }
-
+  
   function orderIds(id1, id2) {
     if (id1 > id2) {
       return id1 + "-" + id2;
@@ -97,7 +98,7 @@ function Sidebar() {
             {currentRoom !== room && (
               <span className="badge rounded-pill bg-primary">
               {/* Error accessing the message from room */}
-                {user.newMessages[room]} 
+                {/* {user.newMessages[room]}  */}
               </span>
             )}
           </ListGroup.Item>
@@ -132,7 +133,7 @@ function Sidebar() {
             </Col>
             <Col xs={1}>
               <span className="badge rounded-pill bg-primary">
-                {user.newMessages[orderIds(member.id, user.id)]}
+                {/* {user.newMessages[orderIds(member.id, user.id)]} */}
               </span>
             </Col>
           </Row>
