@@ -31,15 +31,13 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log(req.body);
-    const user = await knex(USER_TABLE_NAME)
-      .where({ email, password })
-      .returning("*");
-    console.log(user);
+    const user = await knex(USER_TABLE_NAME).where({ email, password }).first();
+    console.log("login route:", user);
     if (!user) {
       throw new Error("User not found");
     }
     await knex("users").where({ email }).update({ status: "online" });
-    res.status(200).json({ user });
+    res.status(200).json(user);
   } catch (e) {
     console.log(e);
     res.status(400).json(e.message);
