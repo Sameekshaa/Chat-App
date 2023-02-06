@@ -61,7 +61,7 @@ function Sidebar() {
       .then((res) => res.json())
       .then((data) => setRooms(data));
   }
-  
+
   function orderIds(id1, id2) {
     if (id1 > id2) {
       return id1 + "-" + id2;
@@ -97,8 +97,7 @@ function Sidebar() {
             {room}{" "}
             {currentRoom !== room && (
               <span className="badge rounded-pill bg-primary">
-              {/* Error accessing the message from room */}
-                {/* {user.newMessages[room]}  */}
+                {user.newMessages[room]} 
               </span>
             )}
           </ListGroup.Item>
@@ -133,7 +132,7 @@ function Sidebar() {
             </Col>
             <Col xs={1}>
               <span className="badge rounded-pill bg-primary">
-                {/* {user.newMessages[orderIds(member.id, user.id)]} */}
+                {user.newMessages[orderIds(member.id, user.id)]}
               </span>
             </Col>
           </Row>
