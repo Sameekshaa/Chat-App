@@ -7,11 +7,12 @@ exports.up = function (knex) {
     .createTable("messages", (table) => {
       table.increments("id").primary();
       table.text("content");
-      table.jsonb("from");
+      table.json("from");
       table.string("socketid");
       table.string("time");
       table.string("date");
       table.string("to");
+      table.timestamps(true, true);
     })
     .then(() => console.log("Table created"))
     .catch((error) => console.error(error))
@@ -22,4 +23,6 @@ exports.up = function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {};
+exports.down = function (knex) {
+  return knex.schema.dropTable("messages");
+};

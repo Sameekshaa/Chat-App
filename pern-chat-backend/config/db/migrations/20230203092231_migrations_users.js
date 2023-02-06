@@ -10,7 +10,7 @@ exports.up = function (knex) {
       table.string("email").notNullable().unique().index();
       table.string("password").notNullable();
       table.string("picture");
-      table.jsonb("new_messages").defaultTo("{}");
+      table.json("newMessages").defaultTo("{}");
       table.string("status").defaultTo("online");
       // table.boolean("isAdmin").defaultTo(false);
       table.timestamps(true, true);
@@ -24,4 +24,6 @@ exports.up = function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {};
+exports.down = function (knex) {
+  return knex.schema.dropTable("users");
+};
