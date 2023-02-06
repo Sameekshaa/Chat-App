@@ -26,12 +26,11 @@ const io = require("socket.io")(server, {
 });
 
 async function getLastMessagesFromRoom(room) {
-  let roomMessages = await knex
+  return await knex
     .select()
     .from(MESSAGE_TABLE_NAME)
     .where({ to: room })
     .orderBy("date", "asc");
-      return roomMessages;
 }
 
 // function sortRoomMessagesByDate(messages) {
@@ -64,14 +63,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message-room", async (room, content, sender, time, date) => {
-    const newMessage = await knex(MESSAGE_TABLE_NAME).insert({
+    return await knex(MESSAGE_TABLE_NAME).insert({
       content,
       from: sender,
       time,
       date,
       to: room,
     });
-    console.log(sender);
     let roomMessages = await getLastMessagesFromRoom(room);
     // roomMessages = sortRoomMessagesByDate(roomMessages);
     console.log("roomMessages", roomMessages);
@@ -81,12 +79,11 @@ io.on("connection", (socket) => {
   });
 
   app.post("/logout", async (req, res) => {
-    console.log(req.body);
+    console.log("logout route body: ", req.body);
     try {
-      const { id, newMessages } = req.body;
+      const { id } = req.body;
       await knex(USER_TABLE_NAME).where({ id: id }).update({
         status: "offline",
-        newMessages: newMessages,
       });
       // const members = await User.find();
       const members = await knex(USER_TABLE_NAME).select(
