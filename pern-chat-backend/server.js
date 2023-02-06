@@ -24,27 +24,27 @@ const io = require("socket.io")(server, {
     methods: ["GET", "POST"],
   },
 });
+
 async function getLastMessagesFromRoom(room) {
   let roomMessages = await knex
     .select()
     .from(MESSAGE_TABLE_NAME)
     .where({ to: room })
     .orderBy("date", "asc");
-
-  return roomMessages;
+      return roomMessages;
 }
 
-function sortRoomMessagesByDate(messages) {
-  return messages.sort(function (a, b) {
-    let date1 = a.id.split("/");
-    let date2 = b.id.split("/");
+// function sortRoomMessagesByDate(messages) {
+//   return messages.sort(function (a, b) {
+//     let date1 = a.id.split("/");
+//     let date2 = b.id.split("/");
 
-    date1 = date1[2] + date1[0] + date1[1];
-    date2 = date2[2] + date2[0] + date2[1];
+//     date1 = date1[2] + date1[0] + date1[1];
+//     date2 = date2[2] + date2[0] + date2[1];
 
-    return date1 < date2 ? -1 : 1;
-  });
-}
+//     return date1 < date2 ? -1 : 1;
+//   });
+// }
 
 // socket connection
 
@@ -58,7 +58,8 @@ io.on("connection", (socket) => {
     socket.join(newRoom);
     socket.leave(previousRoom);
     let roomMessages = await getLastMessagesFromRoom(newRoom);
-    roomMessages = sortRoomMessagesByDate(roomMessages);
+    console.log("roomMessages", roomMessages);
+    // roomMessages = sortRoomMessagesByDate(roomMessages);
     socket.emit("room-messages", roomMessages);
   });
 
@@ -70,15 +71,16 @@ io.on("connection", (socket) => {
       date,
       to: room,
     });
-
+    console.log(sender);
     let roomMessages = await getLastMessagesFromRoom(room);
-    roomMessages = sortRoomMessagesByDate(roomMessages);
+    // roomMessages = sortRoomMessagesByDate(roomMessages);
+    console.log("roomMessages", roomMessages);
     // sending message to room
     io.to(room).emit("room-messages", roomMessages);
     socket.broadcast.emit("notifications", room);
   });
 
-  app.delete("/logout", async (req, res) => {
+  app.post("/logout", async (req, res) => {
     console.log(req.body);
     try {
       const { id, newMessages } = req.body;
