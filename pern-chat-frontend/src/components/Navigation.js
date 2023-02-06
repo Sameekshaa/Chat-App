@@ -6,8 +6,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import logo from "../assets/logo.jpg";
 
 function Navigation() {
-  const userObj = useSelector((state) => state.user);
-  const user = userObj["user"][0];
+  const user = useSelector((state) => state.user);
   const [logoutUser] = useLogoutUserMutation();
   async function handleLogout(e) {
     e.preventDefault();
@@ -37,7 +36,7 @@ function Navigation() {
                 title={
                   <>
                     <img
-                      src={user.picture}
+                      src={user["user"][0].picture}
                       style={{
                         width: 30,
                         height: 30,
