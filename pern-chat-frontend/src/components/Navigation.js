@@ -6,7 +6,8 @@ import { LinkContainer } from "react-router-bootstrap";
 import logo from "../assets/logo.jpg";
 
 function Navigation() {
-  const user = useSelector((state) => state.user);
+  const userObj = useSelector((state) => state.user);
+  const user = userObj["user"][0];
   const [logoutUser] = useLogoutUserMutation();
   async function handleLogout(e) {
     e.preventDefault();
