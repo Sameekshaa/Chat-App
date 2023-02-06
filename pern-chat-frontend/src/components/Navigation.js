@@ -4,16 +4,19 @@ import { useLogoutUserMutation } from "../services/appApi";
 import { useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import logo from "../assets/logo.jpg";
+import { useNavigate } from "react-router-dom";
 
 function Navigation() {
   const user = useSelector((state) => state.user);
   const [logoutUser] = useLogoutUserMutation();
+  const navigate = useNavigate();
   async function handleLogout(e) {
     e.preventDefault();
-    await logoutUser(user);
+    await logoutUser({ id: user.id });
     // redirect to home page
-    window.location.replace("/");
+    navigate("/");
   }
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -36,7 +39,8 @@ function Navigation() {
                 title={
                   <>
                     <img
-                      src={user["user"][0].picture}
+                      src={user.picture || ""}
+                      // src={user.picture}
                       style={{
                         width: 30,
                         height: 30,
@@ -46,7 +50,7 @@ function Navigation() {
                       }}
                       alt="user profile"
                     />
-                    {user.name}
+                    {user.name || ""}
                   </>
                 }
                 id="basic-nav-dropdown"
