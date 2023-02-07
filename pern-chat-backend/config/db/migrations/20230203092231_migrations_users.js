@@ -12,7 +12,6 @@ exports.up = function (knex) {
       table.string("picture");
       table.json("newMessages").defaultTo("{}");
       table.string("status").defaultTo("online");
-      // table.boolean("isAdmin").defaultTo(false);
       table.timestamps(true, true);
     })
     .then(() => console.log("Table created"))
