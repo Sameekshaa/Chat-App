@@ -1,11 +1,11 @@
 import "./Sidebar.css";
 
-import React, { useContext, useEffect } from "react";
-import { Col, ListGroup, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useContext, useEffect} from "react";
+import {Col, ListGroup, Row} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
 
-import { AppContext } from "../context/appContext";
-import { addNotifications, resetNotifications } from "../features/userSlice";
+import {AppContext} from "../context/appContext";
+import {addNotifications, resetNotifications} from "../features/userSlice";
 
 function Sidebar() {
   const user = useSelector((state) => state.user);
@@ -41,7 +41,8 @@ function Sidebar() {
   }
 
   socket.off("notifications").on("notifications", (room) => {
-    if (currentRoom !== room) dispatch(addNotifications(room));
+    if (currentRoom !== room)
+      dispatch(addNotifications(room));
   });
 
   useEffect(() => {
@@ -53,15 +54,13 @@ function Sidebar() {
     }
   }, []);
 
-  socket.off("new-user").on("new-user", (payload) => {
-    setMembers(payload);
-  });
+  socket.off("new-user").on("new-user", (payload) => { setMembers(payload); });
 
   function getRooms() {
     // fetch("https://chat-app-backend-bwff.onrender.com/rooms")
     fetch("http://localhost:5001/rooms")
-      .then((res) => res.json())
-      .then((data) => setRooms(data));
+        .then((res) => res.json())
+        .then((data) => setRooms(data));
   }
 
   function orderIds(id1, id2) {
@@ -84,17 +83,13 @@ function Sidebar() {
   return (
     <>
       <h2>Available rooms</h2>
-      <ListGroup>
-        {" "}
-        {rooms.map((room, idx) => (
+        <ListGroup>{" "} {rooms.map((room, idx) => (
           <ListGroup.Item
             key={idx}
             onClick={() => joinRoom(room)}
             active={room === currentRoom}
             style={{
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "space-between",
+        cursor: "pointer", display: "flex", justifyContent: "space-between",
             }}
           >
             {room}{" "}
@@ -109,18 +104,14 @@ function Sidebar() {
       <h2>Members</h2>
       {members.map((member) => (
         <ListGroup.Item
-          key={member.id}
-          style={{ cursor: "pointer" }}
-          active={privateMemberMsg?.id === member?.id}
-          onClick={() => handlePrivateMemberMsg(member)}
-          disabled={member.id === user.id}
-        >
-          {" "}
-          <Row>
-            <Col xs={2} className="member-status">
-              <img
-                src={member.picture}
-                className="member-status-img"
+            key = {member.id} style =
+            {
+              { cursor: "pointer" }
+            } active = {privateMemberMsg?.id === member?.id} onClick =
+                {() => handlePrivateMemberMsg(member)} disabled =
+                    {member.id === user.id} > {" "}<Row>
+                    <Col xs = {2} className = "member-status">< img
+            src = {member.picture} className = "member-status-img"
                 alt="statusimg"
               />
               {member.status === "online" ? (
