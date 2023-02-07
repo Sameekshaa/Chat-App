@@ -9,8 +9,8 @@ function Home() {
         <Row>
             <Col md={6} className="d-flex flex-direction-column align-items-center justify-content-center">
                 <div>
-                    <h1>Welcome to our Chat Application !!!</h1>
-                    <p>Let's connect with the world today.</p>
+                    <h1>Join our Network</h1>
+                    <p>And connect with people around the world</p>
                     {
                         !user && (<LinkContainer to="/login">
                             <Button variant="success">
