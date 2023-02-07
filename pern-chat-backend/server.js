@@ -66,24 +66,17 @@ io.on("connection", (socket) => {
   });
   // Insert the message into the messages table
   socket.on("message-room", async (room, content, sender, time, date) => {
-    let newMessage = (await knex(MESSAGE_TABLE_NAME).insert({
-      content,
-      from: sender.id,
-      time,
-      date,
-      to: room,
-<<<<<<< HEAD
-    });
-    let roomMessages = await getLastMessagesFromRoom(room);
-    // roomMessages = sortRoomMessagesByDate(roomMessages);
-    console.log("roomMessages", roomMessages);
-    // Emit the room-messages event with the updated messages to the room
-    // clients
-    io.to(room).emit("room-messages", roomMessages);
-    // Broadcast the notifications event with the room name to all clients
-    socket.broadcast.emit("notifications", room);
-=======
-    }).returning('*'))[0];
+    let newMessage = (
+      await knex(MESSAGE_TABLE_NAME)
+        .insert({
+          content,
+          from: sender.id,
+          time,
+          date,
+          to: room,
+        })
+        .returning("*")
+    )[0];
 
     newMessage.from = {
       id: sender.id,
@@ -93,16 +86,14 @@ io.on("connection", (socket) => {
     };
 
     socket.broadcast.emit("new-messages", newMessage);
-    console.log("newmsg", newMessage)
-    
+    console.log("newmsg", newMessage);
+
     // let roomMessages = await getLastMessagesFromRoom(room);
     // // // sending message to room
     // io.to(room).emit("room-messages", roomMessages);
     // socket.broadcast.emit("notifications", room);
 
     return;
-   
->>>>>>> origin/dev
   });
 
   // Handle logout request
