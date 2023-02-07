@@ -1,10 +1,11 @@
 import React from "react";
-import { Nav, Navbar, Container, Button, NavDropdown } from "react-bootstrap";
-import { useLogoutUserMutation } from "../services/appApi";
+import { Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
-import logo from "../assets/logo.jpg";
 import { useNavigate } from "react-router-dom";
+
+import logo from "../assets/logo.jpg";
+import { useLogoutUserMutation } from "../services/appApi";
 
 function Navigation() {
   const user = useSelector((state) => state.user);
