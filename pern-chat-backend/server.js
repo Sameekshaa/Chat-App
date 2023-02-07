@@ -4,7 +4,6 @@ const userRoutes = require("./routes/userRoutes");
 const rooms = ["General", "Fullstack", "Data", "AI"];
 const cors = require("cors");
 const { knex } = require("./config/db/index");
-// const { default: knex } = require("knex");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -33,8 +32,9 @@ const io = require("socket.io")(server, {
 
 async function getLastMessagesFromRoom(room) {
   return await knex
-    .select()
+    .select("messages.*", "users.name", "users.email", "users.picture")
     .from(MESSAGE_TABLE_NAME)
+    .join("users", "messages.from", "=", "users.id")
     .where({ to: room })
     .orderBy("date", "asc");
 }
@@ -50,18 +50,29 @@ io.on("connection", (socket) => {
   socket.on("join-room", async (newRoom, previousRoom) => {
     socket.join(newRoom);
     socket.leave(previousRoom);
-    let roomMessages = await getLastMessagesFromRoom(newRoom);
+    let roomMessages = (await getLastMessagesFromRoom(newRoom)).map(
+      ({ from, name, email, picture, ...message }) => ({
+        ...message,
+        from: {
+          name,
+          email,
+          picture,
+          id: from,
+        },
+      })
+    );
     console.log("roomMessages", roomMessages);
     socket.emit("room-messages", roomMessages);
   });
   // Insert the message into the messages table
   socket.on("message-room", async (room, content, sender, time, date) => {
-    return await knex(MESSAGE_TABLE_NAME).insert({
+    let newMessage = (await knex(MESSAGE_TABLE_NAME).insert({
       content,
-      from: sender,
+      from: sender.id,
       time,
       date,
       to: room,
+<<<<<<< HEAD
     });
     let roomMessages = await getLastMessagesFromRoom(room);
     // roomMessages = sortRoomMessagesByDate(roomMessages);
@@ -71,6 +82,27 @@ io.on("connection", (socket) => {
     io.to(room).emit("room-messages", roomMessages);
     // Broadcast the notifications event with the room name to all clients
     socket.broadcast.emit("notifications", room);
+=======
+    }).returning('*'))[0];
+
+    newMessage.from = {
+      id: sender.id,
+      name: sender.name,
+      email: sender.email,
+      picture: sender.picture,
+    };
+
+    socket.broadcast.emit("new-messages", newMessage);
+    console.log("newmsg", newMessage)
+    
+    // let roomMessages = await getLastMessagesFromRoom(room);
+    // // // sending message to room
+    // io.to(room).emit("room-messages", roomMessages);
+    // socket.broadcast.emit("notifications", room);
+
+    return;
+   
+>>>>>>> origin/dev
   });
 
   // Handle logout request

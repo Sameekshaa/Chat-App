@@ -39,6 +39,11 @@ function MessageForm() {
     setMessages(roomMessages);
   });
 
+  socket.on('new-messages', (newMessage) => {
+    setMessages([...messages, newMessage]);
+  });
+
+
   function handleSubmit(e) {
     e.preventDefault();
     if (!message) return;
@@ -48,8 +53,8 @@ function MessageForm() {
     const time = today.getHours() + ":" + minutes;
     const roomId = currentRoom;
 
-    const userId = user.id;
-    socket.emit("message-room", roomId, message, userId, time, todayDate);
+    // const userId = user.id;
+    socket.emit("message-room", roomId, message, user, time, todayDate);
 
     setMessages((current) => [
       ...current,
@@ -99,11 +104,11 @@ function MessageForm() {
                 )}
                 {console.log("user", user.email)}
                 <div
-                  className={
-                    sender?.email === user?.email
-                      ? "message"
-                      : "incoming-message"
-                  }
+                    className={
+                      sender?.email === user?.email
+                        ? "message"
+                        : "incoming-message"
+                    }
                 >
                   <div className="message-inner">
                     <div className="d-flex align-items-center mb-3">

@@ -4,7 +4,11 @@ import { useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
 
+<<<<<<< HEAD
 import logo from "../assets/logo.png";
+=======
+import logo from "../assets/logo.jpg";
+>>>>>>> origin/dev
 import { useLogoutUserMutation } from "../services/appApi";
 
 function Navigation() {
@@ -41,7 +45,6 @@ function Navigation() {
                   <>
                     <img
                       src={user.picture || ""}
-                      // src={user.picture}
                       style={{
                         width: 30,
                         height: 30,
