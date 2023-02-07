@@ -1,18 +1,20 @@
 import "./MessageForm.css";
 
-import React, {useContext, useEffect, useRef, useState} from "react";
-import {Button, Col, Form, Row} from "react-bootstrap";
-import {useSelector} from "react-redux";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
-import {AppContext} from "../context/appContext";
+import { AppContext } from "../context/appContext";
 
 function MessageForm() {
   const [message, setMessage] = useState("");
   const user = useSelector((state) => state.user);
-  const {socket, currentRoom, setMessages, messages, privateMemberMsg} =
-      useContext(AppContext);
+  const { socket, currentRoom, setMessages, messages, privateMemberMsg } =
+    useContext(AppContext);
   const messageEndRef = useRef(null);
-  useEffect(() => { scrollToBottom(); }, [ messages ]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   function getFormattedDate() {
     const date = new Date();
@@ -28,39 +30,40 @@ function MessageForm() {
   }
 
   function scrollToBottom() {
-    messageEndRef.current?.scrollIntoView({behavior : "smooth"});
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }
 
   const todayDate = getFormattedDate();
 
-  socket.off("room-messages")
-      .on("room-messages", (roomMessages) => { setMessages(roomMessages); });
+  socket.off("room-messages").on("room-messages", (roomMessages) => {
+    setMessages(roomMessages);
+  });
 
-  socket.on('new-messages', (newMessage) => {
-    setMessages([...messages, newMessage ]);
+  socket.on("new-messages", (newMessage) => {
+    setMessages([...messages, newMessage]);
   });
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!message)
-      return;
+    if (!message) return;
     const today = new Date();
     const minutes =
-        today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
+      today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
     const time = today.getHours() + ":" + minutes;
     const roomId = currentRoom;
 
     // const userId = user.id;
     socket.emit("message-room", roomId, message, user, time, todayDate);
 
-    setMessages((current) => [...current,
-                              {
-                                room : roomId,
-                                content : message,
-                                from : user,
-                                time : time,
-                                date : todayDate,
-                              },
+    setMessages((current) => [
+      ...current,
+      {
+        room: roomId,
+        content: message,
+        from: user,
+        time: time,
+        date: todayDate,
+      },
     ]);
 
     setMessage("");
@@ -90,7 +93,7 @@ function MessageForm() {
         {!user && <div className="alert alert-danger">Please login</div>}
         {user &&
           messages.map(({ date, content, time, from: sender }, idx) => {
-      const hideDate = idx > 0 && date === messages[idx - 1].date;
+            const hideDate = idx > 0 && date === messages[idx - 1].date;
             return (
               <div key={idx}>
                 {!hideDate && (
@@ -100,11 +103,11 @@ function MessageForm() {
                 )}
                 {console.log("user", user.email)}
                 <div
-                    className={
-                      sender?.email === user?.email
-                        ? "message"
-                        : "incoming-message"
-                    }
+                  className={
+                    sender?.email === user?.email
+                      ? "message"
+                      : "incoming-message"
+                  }
                 >
                   <div className="message-inner">
                     <div className="d-flex align-items-center mb-3">
@@ -147,10 +150,9 @@ function MessageForm() {
           </Col>
           <Col md={1}>
             <Button
-        variant = "primary"
-        type = "submit"
-              style={
-          { width: "100%", backgroundColor: "orange" }}
+              variant="primary"
+              type="submit"
+              style={{ width: "100%", backgroundColor: "orange" }}
               disabled={!user}
             >
               <i className="fas fa-paper-plane"></i>
