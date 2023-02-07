@@ -3,7 +3,7 @@ import { Nav, Navbar, Container, Button, NavDropdown } from "react-bootstrap";
 import { useLogoutUserMutation } from "../services/appApi";
 import { useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
-import logo from "../assets/logo.jpg";
+import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
 function Navigation() {

@@ -1,0 +1,13 @@
+.home__bg {
+    background-image: url(https://d540vms5r2s2d.cloudfront.net/mad/uploads/mad_blog_6012b5c838d421611838920.png);
+    height: 92vh;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow-x: hidden;
+}
+
+.home-message-icon {
+    margin-left: 10px;
+    display: inline-block;
+}

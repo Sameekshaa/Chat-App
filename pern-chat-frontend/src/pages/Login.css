@@ -1,0 +1,8 @@
+.login__bg {
+    background-image: url(https://kayako.com/wp-content/uploads/2021/01/chat_stat@3x.png);
+    height: 92vh;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow-x: hidden;
+}
