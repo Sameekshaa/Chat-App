@@ -8,10 +8,9 @@ router.post("/", async (req, res) => {
   try {
     const { name, email, password, picture } = req.body;
     console.log(req.body);
-    const user = await knex(USER_TABLE_NAME)
+    const user = (await knex(USER_TABLE_NAME)
       .insert({ name, email, password, picture })
-      .returning("*");
-    console.log(user);
+      .returning("*"))[0];
     res.status(201).json(user);
   } catch (e) {
     let msg;
@@ -30,7 +29,6 @@ router.post("/", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(req.body);
     const user = await knex(USER_TABLE_NAME).where({ email, password }).first();
     console.log("login route:", user);
     if (!user) {
