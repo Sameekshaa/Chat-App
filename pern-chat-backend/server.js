@@ -4,8 +4,6 @@ const userRoutes = require("./routes/userRoutes");
 const rooms = ["General", "Fullstack", "Data", "AI"];
 const cors = require("cors");
 const { knex } = require("./config/db/index");
-const { send } = require("process");
-// const { default: knex } = require("knex");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
