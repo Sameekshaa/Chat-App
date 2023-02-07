@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { Col, Row, Container, Form, Button } from "react-bootstrap";
-import { useSignupUserMutation } from "../services/appApi";
-import { Link, useNavigate } from "react-router-dom";
-import botImg from "../assets/bot.jpeg";
 import "./Signup.css";
+
+import React, { useState } from "react";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+
+import botImg from "../assets/bot.jpeg";
+import { useSignupUserMutation } from "../services/appApi";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -11,7 +13,7 @@ function Signup() {
   const [name, setName] = useState("");
   const [signupUser, { isLoading, error }] = useSignupUserMutation();
   const navigate = useNavigate();
-  //image upload states
+  // image upload states
   const [image, setImage] = useState(null);
   const [upladingImg, setUploadingImg] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
@@ -65,10 +67,15 @@ function Signup() {
   return (
     <Container>
       <Row>
-        <Col md={7} className="d-flex align-items-center justify-content-center flex-direction-column">
+        <Col
+          md={7}
+          className="d-flex align-items-center justify-content-center flex-direction-column"
+        >
           <Form style={{ width: "80%", maxWidth: 500 }} onSubmit={handleSignup}>
             <h1 className="text-center">Create account</h1>
-            <p className="text-center">Please upload profile pic before signup.</p>
+            <p className="text-center">
+              Please upload profile pic before signup.
+            </p>
             <div className="signup-profile-pic__container">
               <img
                 src={imagePreview || botImg}
@@ -105,7 +112,7 @@ function Signup() {
                 value={email}
               />
               <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
+                We'll never share your email with anyone else.{" "}
               </Form.Text>
             </Form.Group>
 

@@ -46,7 +46,7 @@ io.on("connection", (socket) => {
     io.emit("new-user", members);
   });
 
-  //Handle join-room event
+  // Handle join-room event
   socket.on("join-room", async (newRoom, previousRoom) => {
     socket.join(newRoom);
     socket.leave(previousRoom);
@@ -54,7 +54,7 @@ io.on("connection", (socket) => {
     console.log("roomMessages", roomMessages);
     socket.emit("room-messages", roomMessages);
   });
-  //Insert the message into the messages table
+  // Insert the message into the messages table
   socket.on("message-room", async (room, content, sender, time, date) => {
     return await knex(MESSAGE_TABLE_NAME).insert({
       content,
@@ -66,14 +66,14 @@ io.on("connection", (socket) => {
     let roomMessages = await getLastMessagesFromRoom(room);
     // roomMessages = sortRoomMessagesByDate(roomMessages);
     console.log("roomMessages", roomMessages);
-    // Emit the room-messages event with the updated messages to the room clients
+    // Emit the room-messages event with the updated messages to the room
+    // clients
     io.to(room).emit("room-messages", roomMessages);
     // Broadcast the notifications event with the room name to all clients
     socket.broadcast.emit("notifications", room);
   });
 
-
-  // Handle logout request 
+  // Handle logout request
   app.post("/logout", async (req, res) => {
     console.log("logout route body: ", req.body);
     try {
@@ -99,7 +99,7 @@ io.on("connection", (socket) => {
   });
 });
 
-//Get all the rooms
+// Get all the rooms
 app.get("/rooms", (req, res) => {
   res.json(rooms);
 });
@@ -108,7 +108,7 @@ server.listen(PORT, () => {
   console.log("listening to port", PORT);
 });
 
-//unhandled promise rejetcion
+// unhandled promise rejetcion
 process.on("unhandledRejection", (err) => {
   console.log(`Error: ${err.message}`);
   console.log("Shutting down server  ");

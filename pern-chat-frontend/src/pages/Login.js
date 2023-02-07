@@ -1,9 +1,11 @@
-import React, { useContext, useState } from "react";
-import { Col, Row, Container, Form, Button, Spinner } from "react-bootstrap";
-import { useLoginUserMutation } from "../services/appApi";
-import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
+
+import React, { useContext, useState } from "react";
+import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+
 import { AppContext } from "../context/appContext";
+import { useLoginUserMutation } from "../services/appApi";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -29,7 +31,10 @@ function Login() {
     <Container>
       <Row>
         <Col md={5} className="login__bg"></Col>
-        <Col md={7} className="d-flex align-items-center justify-content-center flex-direction-column">
+        <Col
+          md={7}
+          className="d-flex align-items-center justify-content-center flex-direction-column"
+        >
           <Form style={{ width: "80%", maxWidth: 500 }} onSubmit={handleLogin}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               {error && <p className="alert alert-danger">{error.data}</p>}
@@ -42,7 +47,7 @@ function Login() {
                 required
               />
               <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
+                We'll never share your email with anyone else.{" "}
               </Form.Text>
             </Form.Group>
 
@@ -67,7 +72,7 @@ function Login() {
           </Form>
         </Col>
       </Row>
-    </Container >
+    </Container>
   );
 }
 
