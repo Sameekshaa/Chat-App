@@ -8,8 +8,6 @@ function MessageForm() {
   const user = useSelector((state) => state.user);
   const { socket, currentRoom, setMessages, messages, privateMemberMsg } =
     useContext(AppContext);
-  console.log("messages from MessageForm.js", messages);
-  //  console.log("user in msg form", user);
   const messageEndRef = useRef(null);
   useEffect(() => {
     scrollToBottom();
@@ -61,7 +59,6 @@ function MessageForm() {
       },
     ]);
 
-    // user.[0].id;
     setMessage("");
   }
   return (
@@ -87,7 +84,6 @@ function MessageForm() {
           </>
         )}
         {!user && <div className="alert alert-danger">Please login</div>}
-
         {user &&
           messages.map(({ date, content, time, from: sender }, idx) => {
             const hideDate = idx > 0 && date === messages[idx - 1].date;
@@ -98,7 +94,7 @@ function MessageForm() {
                     {date}
                   </p>
                 )}
-
+                {console.log("user", user.email)}
                 <div
                   className={
                     sender?.email === user?.email
