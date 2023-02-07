@@ -40,7 +40,6 @@ function Navigation() {
                   <>
                     <img
                       src={user.picture || ""}
-                      // src={user.picture}
                       style={{
                         width: 30,
                         height: 30,
