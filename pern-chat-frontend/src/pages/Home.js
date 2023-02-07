@@ -15,7 +15,7 @@ function Home() {
       >
         <div>
           <h1>Join our Network</h1>
-          <p>And connect with people around the world</p>
+          <p>And connect with people around the world</p>{" "}
           {!user && (
             <LinkContainer to="/login">
               <Button variant="success">
