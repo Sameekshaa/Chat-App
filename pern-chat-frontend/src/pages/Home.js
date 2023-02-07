@@ -1,10 +1,12 @@
-import React from "react";
-import { Row, Col, Button } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import { LinkContainer } from "react-router-bootstrap";
 import "./Home.css";
+
+import React from "react";
+import {Button, Col, Row} from "react-bootstrap";
+import {useSelector} from "react-redux";
+import {LinkContainer} from "react-router-bootstrap";
+
 function Home() {
-    const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
     return (
         <Row>
             <Col md={6} className="d-flex flex-direction-column align-items-center justify-content-center">
