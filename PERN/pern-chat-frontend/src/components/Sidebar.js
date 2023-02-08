@@ -59,9 +59,9 @@ function Sidebar() {
 
   function getRooms() {
     // fetch("https://chat-app-backend-bwff.onrender.com/rooms")
-    fetch("http://localhost:5001/rooms")
-      .then((res) => res.json())
-      .then((data) => setRooms(data));
+     fetch(`${process.env.REACT_APP_BASE_URL}/rooms`)
+       .then((res) => res.json())
+       .then((data) => setRooms(data));
   }
 
   function orderIds(id1, id2) {
