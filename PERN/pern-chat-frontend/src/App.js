@@ -37,6 +37,7 @@ function App() {
         setNewMessages,
       }}
     >
+      {" "}
       <BrowserRouter>
         <Navigation />
         <Routes>
@@ -45,15 +46,23 @@ function App() {
             <>
               <Route
                 path="/login
-         "
+  "
                 element={<Login />}
               />
-              <Route path="/signup" element={<Signup />} />
+              <Route
+                path="/signup
+                           "
+                element={<Signup />}
+              />
             </>
           )}
-          <Route path="/chat" element={<Chat />} />
+          <Route
+            path="/chat
+              "
+            element={<Chat />}
+          />
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter>{" "}
     </AppContext.Provider>
   );
 }
