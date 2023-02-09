@@ -1,14 +1,18 @@
-const {userRoutes} = require("./userRoutes");
-const {server} = require("../server");
+const { userRoutes } = require("./userRoutes");
+const { server } = require("../server");
 const request = require("supertest");
-const {knex} = require("../config/db/index");
-const rooms = [ "General", "Fullstack", "Data", "AI" ];
+const { knex } = require("../config/db/index");
+const rooms = ["General", "Fullstack", "Data", "AI"];
 
 // importing mock user data
-const {user} = require("./mockData");
+const { user } = require("./mockData");
 
 afterAll(async () => {
-  async () => { await server.close(() => { process.exit(1); }); };
+  async () => {
+    await server.close(() => {
+      process.exit(1);
+    });
+  };
 });
 
 // Test for Register user.
@@ -16,7 +20,11 @@ describe("Register user", () => {
   afterEach(async () => {
     // clearing the test user from database after every test
     await knex("users").where("email", user.email).del();
-    async () => { await server.close(() => { process.exit(1); }); };
+    async () => {
+      await server.close(() => {
+        process.exit(1);
+      });
+    };
   });
 
   it("Returns 201 if user is inserted", async () => {
@@ -44,17 +52,22 @@ describe("Login User", () => {
   afterEach(async () => {
     // clearing the test user from database after every test
     await knex("users").where("email", user.email).del();
-    async () => { await server.close(() => { process.exit(1); }); };
+    async () => {
+      await server.close(() => {
+        process.exit(1);
+      });
+    };
   });
 
   it("should return status code 200 for userlogin", async () => {
     const res = await request("localhost:5001").post("/users").send(user);
     const login = {
-      email : res.body.email,
-      password : res.body.password,
+      email: res.body.email,
+      password: res.body.password,
     };
-    const logUser =
-        await request("localhost:5001").post("/users/login").send(login);
+    const logUser = await request("localhost:5001")
+      .post("/users/login")
+      .send(login);
     expect(logUser.statusCode).toEqual(200);
     console.log("logUser body for login", logUser.body.id);
     expect(logUser.body.email).toBe(user.email);
@@ -64,7 +77,11 @@ describe("Login User", () => {
 // Test for getting /rooms
 describe("Get Rooms", () => {
   afterEach(async () => {
-    async () => { await server.close(() => { process.exit(1); }); };
+    async () => {
+      await server.close(() => {
+        process.exit(1);
+      });
+    };
   });
 
   it("GET /rooms should return rooms", async () => {
