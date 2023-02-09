@@ -46,3 +46,28 @@ describe("Register user", () => {
   });
 });
 
+// Test for Login user.
+describe("Login User", () => {
+  afterEach(async () => {
+    // clearing the test user from database after every test
+    await knex("users").where("email", user.email).del();
+    async () => {
+      await server.close(() => {
+        process.exit(1);
+      });
+    };
+  });
+  it("shoud return status code 200 for userlogin", async () => {
+    const res = await request("localhost:5001").post("/users").send(user);
+    const login = {
+      email: res.body.email,
+      password: res.body.password,
+    };
+    const logUser = await request("localhost:5001")
+      .post("/users/login")
+      .send(login);
+    expect(logUser.statusCode).toEqual(200);
+    console.log("logUser body for login", logUser.body.id);
+    expect(logUser.body.email).toBe(user.email);
+  });
+});
