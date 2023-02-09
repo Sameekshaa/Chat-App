@@ -4,6 +4,7 @@ const userRoutes = require("./routes/userRoutes");
 const rooms = ["General", "Fullstack", "Data", "AI"];
 const cors = require("cors");
 const { knex } = require("./config/db/index");
+require("dotenv").config();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -18,7 +19,8 @@ const server = require("http").createServer(app);
 const PORT = 5001;
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: (`${process.env.SERVER_ORIGIN}`),
+    
     // origin: 'https://chat-app-backend-bwff.onrender.com',
     methods: ["GET", "POST"],
   },
@@ -60,13 +62,17 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message-room", async (room, content, sender, time, date) => {
-    let newMessage = (await knex(MESSAGE_TABLE_NAME).insert({
-      content,
-      from: sender.id,
-      time,
-      date,
-      to: room,
-    }).returning('*'))[0];
+    let newMessage = (
+      await knex(MESSAGE_TABLE_NAME)
+        .insert({
+          content,
+          from: sender.id,
+          time,
+          date,
+          to: room,
+        })
+        .returning("*")
+    )[0];
 
     newMessage.from = {
       id: sender.id,
@@ -76,15 +82,14 @@ io.on("connection", (socket) => {
     };
 
     socket.broadcast.emit("new-messages", newMessage);
-    console.log("newmsg", newMessage)
-    
+    console.log("newmsg", newMessage);
+
     // let roomMessages = await getLastMessagesFromRoom(room);
     // // // sending message to room
     // io.to(room).emit("room-messages", roomMessages);
     // socket.broadcast.emit("notifications", room);
 
     return;
-   
   });
 
   app.post("/logout", async (req, res) => {
