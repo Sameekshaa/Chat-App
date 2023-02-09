@@ -9,7 +9,6 @@ import { addNotifications, resetNotifications } from "../features/userSlice";
 
 function Sidebar() {
   const user = useSelector((state) => state.user);
-  console.log("user", user);
   const dispatch = useDispatch();
   const {
     socket,

@@ -30,7 +30,7 @@ function MessageForm() {
   }
 
   function scrollToBottom() {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messageEndRef.current?.scrollIntoView({ behavior: "instant" });
   }
 
   const todayDate = getFormattedDate();
@@ -66,7 +66,6 @@ function MessageForm() {
         date: todayDate,
       },
     ]);
-
     setMessage("");
   }
   return (
@@ -102,13 +101,12 @@ function MessageForm() {
                     {date}
                   </p>
                 )}
-                {console.log("user", user.email)}
                 <div
-                    className={
-                      sender?.email === user?.email
-                        ? "message"
-                        : "incoming-message"
-                    }
+                  className={
+                    sender?.email === user?.email
+                      ? "message"
+                      : "incoming-message"
+                  }
                 >
                   <div className="message-inner">
                     <div className="d-flex align-items-center mb-3">

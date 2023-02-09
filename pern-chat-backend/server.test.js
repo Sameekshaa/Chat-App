@@ -1,8 +1,8 @@
 const test = require("ava");
 const express = require("express");
-const app = express();
-const rooms = ["General", "Fullstack", "Data", "AI"];
+const app = require();
 const cors = require("cors");
+const request = require('supertest');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -20,7 +20,7 @@ test.after.always(() => {
 
 test("GET /rooms should return rooms", async (t) => {
   const res = await request(app).get("/rooms");
-  // t.is(res.status, 200);
+  console.log(res)
+  t.is(res.status, 200);
   t.deepEqual(res.body, rooms);
-  console.log(res.body);
 });
