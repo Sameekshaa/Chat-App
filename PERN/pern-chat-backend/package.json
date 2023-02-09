@@ -8,7 +8,6 @@
     "dev": "nodemon server.js",
     "test": "ava"
   },
-  
   "keywords": [],
   "author": "",
   "license": "ISC",
