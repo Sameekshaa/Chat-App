@@ -2,6 +2,7 @@ const { userRoutes } = require("./userRoutes");
 const { server } = require("../server");
 const request = require("supertest");
 const { knex } = require("../config/db/index");
+const rooms = ["General", "Fullstack", "Data", "AI"];
 
 // importing mock user data 
 const { user } = require("./mockData");
@@ -57,7 +58,8 @@ describe("Login User", () => {
       });
     };
   });
-  it("shoud return status code 200 for userlogin", async () => {
+
+  it("should return status code 200 for userlogin", async () => {
     const res = await request("localhost:5001").post("/users").send(user);
     const login = {
       email: res.body.email,
@@ -70,4 +72,23 @@ describe("Login User", () => {
     console.log("logUser body for login", logUser.body.id);
     expect(logUser.body.email).toBe(user.email);
   });
+});
+
+// Test for getting /rooms
+describe("Get Rooms", () => {
+  afterEach(async () => {
+    async () => {
+      await server.close(() => {
+        process.exit(1);
+      });
+    };
+  });
+
+it("GET /rooms should return rooms", async () => {
+  //   jest.setTimeout(10000);
+  const res = await request("localhost:5001").get("/rooms");
+  expect(res.statusCode).toEqual(200);
+  console.log("res body", res.body);
+  expect(res.body).toStrictEqual(rooms);
+});
 });
