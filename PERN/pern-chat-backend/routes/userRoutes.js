@@ -8,9 +8,11 @@ router.post("/", async (req, res) => {
   try {
     const { name, email, password, picture } = req.body;
     console.log(req.body);
-    const user = (await knex(USER_TABLE_NAME)
-      .insert({ name, email, password, picture })
-      .returning("*"))[0];
+    const user = (
+      await knex(USER_TABLE_NAME)
+        .insert({ name, email, password, picture })
+        .returning("*")
+    )[0];
     res.status(201).json(user);
   } catch (e) {
     let msg;

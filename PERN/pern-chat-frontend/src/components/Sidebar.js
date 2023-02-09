@@ -1,9 +1,11 @@
+import "./Sidebar.css";
+
 import React, { useContext, useEffect } from "react";
 import { Col, ListGroup, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+
 import { AppContext } from "../context/appContext";
 import { addNotifications, resetNotifications } from "../features/userSlice";
-import "./Sidebar.css";
 
 function Sidebar() {
   const user = useSelector((state) => state.user);
@@ -21,7 +23,7 @@ function Sidebar() {
     currentRoom,
   } = useContext(AppContext);
 
-  console.log("socket", socket); //socket connection
+  console.log("socket", socket); // socket connection
   // console.log("members", members);
 
   function joinRoom(room, isPublic = true) {
@@ -83,6 +85,7 @@ function Sidebar() {
     <>
       <h2>Available rooms</h2>
       <ListGroup>
+        {" "}
         {rooms.map((room, idx) => (
           <ListGroup.Item
             key={idx}
@@ -97,7 +100,7 @@ function Sidebar() {
             {room}{" "}
             {currentRoom !== room && (
               <span className="badge rounded-pill bg-primary">
-                {user.newMessages[room]} 
+                {user.newMessages[room]}
               </span>
             )}
           </ListGroup.Item>
@@ -112,6 +115,7 @@ function Sidebar() {
           onClick={() => handlePrivateMemberMsg(member)}
           disabled={member.id === user.id}
         >
+          {" "}
           <Row>
             <Col xs={2} className="member-status">
               <img

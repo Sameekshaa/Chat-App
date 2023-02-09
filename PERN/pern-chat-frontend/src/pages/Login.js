@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
-import { Container, Form, Button, Spinner } from "react-bootstrap";
-import { useLoginUserMutation } from "../services/appApi";
+import { Button, Container, Form, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 
 import { AppContext } from "../context/appContext";
+import { useLoginUserMutation } from "../services/appApi";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -40,7 +40,7 @@ function Login() {
             required
           />
           <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
+            We'll never share your email with anyone else.{" "}
           </Form.Text>
         </Form.Group>
 

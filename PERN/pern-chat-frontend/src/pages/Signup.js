@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Container, Form, Button } from "react-bootstrap";
-import { useSignupUserMutation } from "../services/appApi";
+import { Button, Container, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+
 import botImg from "../assets/bot.jpeg";
+import { useSignupUserMutation } from "../services/appApi";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -10,7 +11,7 @@ function Signup() {
   const [name, setName] = useState("");
   const [signupUser, { isLoading, error }] = useSignupUserMutation();
   const navigate = useNavigate();
-  //image upload states
+  // image upload states
   const [image, setImage] = useState(null);
   const [upladingImg, setUploadingImg] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
@@ -82,7 +83,7 @@ function Signup() {
             accept="image/png, image/jpeg"
             onChange={validateImg}
           />
-        </div>
+        </div>{" "}
         {error && <p className="alert alert-danger">{error.data}</p>}
         <Form.Group className="mb-3" controlId="formBasicName">
           <Form.Label>Name</Form.Label>
@@ -105,7 +106,6 @@ function Signup() {
             We'll never share your email with anyone else.
           </Form.Text>
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control

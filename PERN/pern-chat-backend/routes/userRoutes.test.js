@@ -4,7 +4,7 @@ const request = require("supertest");
 const { knex } = require("../config/db/index");
 const rooms = ["General", "Fullstack", "Data", "AI"];
 
-// importing mock user data 
+// importing mock user data
 const { user } = require("./mockData");
 
 afterAll(async () => {
@@ -84,11 +84,11 @@ describe("Get Rooms", () => {
     };
   });
 
-it("GET /rooms should return rooms", async () => {
-  //   jest.setTimeout(10000);
-  const res = await request("localhost:5001").get("/rooms");
-  expect(res.statusCode).toEqual(200);
-  console.log("res body", res.body);
-  expect(res.body).toStrictEqual(rooms);
-});
+  it("GET /rooms should return rooms", async () => {
+    //   jest.setTimeout(10000);
+    const res = await request("localhost:5001").get("/rooms");
+    expect(res.statusCode).toEqual(200);
+    console.log("res body", res.body);
+    expect(res.body).toStrictEqual(rooms);
+  });
 });

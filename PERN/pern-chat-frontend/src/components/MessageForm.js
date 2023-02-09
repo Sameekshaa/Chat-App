@@ -1,8 +1,11 @@
+import "./MessageForm.css";
+
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
+
 import { AppContext } from "../context/appContext";
-import "./MessageForm.css";
+
 function MessageForm() {
   const [message, setMessage] = useState("");
   const user = useSelector((state) => state.user);
@@ -38,10 +41,9 @@ function MessageForm() {
     setMessages(roomMessages);
   });
 
-  socket.on('new-messages', (newMessage) => {
+  socket.on("new-messages", (newMessage) => {
     setMessages([...messages, newMessage]);
   });
-
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -105,11 +107,11 @@ function MessageForm() {
                 )}
 
                 <div
-                    className={
-                      sender?.email === user?.email
-                        ? "message"
-                        : "incoming-message"
-                    }
+                  className={
+                    sender?.email === user?.email
+                      ? "message"
+                      : "incoming-message"
+                  }
                 >
                   <div className="message-inner">
                     <div className="d-flex align-items-center mb-3">

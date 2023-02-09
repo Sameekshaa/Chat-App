@@ -60,13 +60,17 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message-room", async (room, content, sender, time, date) => {
-    let newMessage = (await knex(MESSAGE_TABLE_NAME).insert({
-      content,
-      from: sender.id,
-      time,
-      date,
-      to: room,
-    }).returning('*'))[0];
+    let newMessage = (
+      await knex(MESSAGE_TABLE_NAME)
+        .insert({
+          content,
+          from: sender.id,
+          time,
+          date,
+          to: room,
+        })
+        .returning("*")
+    )[0];
 
     newMessage.from = {
       id: sender.id,
@@ -76,15 +80,14 @@ io.on("connection", (socket) => {
     };
 
     socket.broadcast.emit("new-messages", newMessage);
-    console.log("newmsg", newMessage)
-    
+    console.log("newmsg", newMessage);
+
     // let roomMessages = await getLastMessagesFromRoom(room);
     // // // sending message to room
     // io.to(room).emit("room-messages", roomMessages);
     // socket.broadcast.emit("notifications", room);
 
     return;
-   
   });
 
   app.post("/logout", async (req, res) => {
@@ -115,7 +118,7 @@ server.listen(PORT, () => {
   console.log("listening to port", PORT);
 });
 
-//unhandled promise rejetcion
+// unhandled promise rejetcion
 process.on("unhandledRejection", (err) => {
   console.log(`Error: ${err.message}`);
   console.log("Shutting down server  ");
