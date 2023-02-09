@@ -59,9 +59,9 @@ function Sidebar() {
 
   function getRooms() {
     // fetch("https://chat-app-backend-bwff.onrender.com/rooms")
-    fetch("http://localhost:5001/rooms")
-      .then((res) => res.json())
-      .then((data) => setRooms(data));
+     fetch(`${process.env.REACT_APP_BASE_URL}/rooms`)
+       .then((res) => res.json())
+       .then((data) => setRooms(data));
   }
 
   function orderIds(id1, id2) {
@@ -100,7 +100,7 @@ function Sidebar() {
             {room}{" "}
             {currentRoom !== room && (
               <span className="badge rounded-pill bg-primary">
-                {user.newMessages[room]}
+                {/* {user.newMessages[room]}  */}
               </span>
             )}
           </ListGroup.Item>
@@ -136,7 +136,7 @@ function Sidebar() {
             </Col>
             <Col xs={1}>
               <span className="badge rounded-pill bg-primary">
-                {user.newMessages[orderIds(member.id, user.id)]}
+                {/* {user.newMessages[orderIds(member.id, user.id)]} */}
               </span>
             </Col>
           </Row>

@@ -4,6 +4,7 @@ const userRoutes = require("./routes/userRoutes");
 const rooms = ["General", "Fullstack", "Data", "AI"];
 const cors = require("cors");
 const { knex } = require("./config/db/index");
+require("dotenv").config();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -18,7 +19,8 @@ const server = require("http").createServer(app);
 const PORT = 5001;
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: (`${process.env.SERVER_ORIGIN}`),
+    
     // origin: 'https://chat-app-backend-bwff.onrender.com',
     methods: ["GET", "POST"],
   },
