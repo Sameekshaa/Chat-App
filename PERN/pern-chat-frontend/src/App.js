@@ -1,11 +1,11 @@
 import "./App.css";
 
-import {useState} from "react";
-import {useSelector} from "react-redux";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Navigation from "./components/Navigation";
-import {AppContext, socket} from "./context/appContext";
+import { AppContext, socket } from "./context/appContext";
 import Chat from "./pages/Chat";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -20,30 +20,42 @@ function App() {
   const [newMessages, setNewMessages] = useState({});
   const user = useSelector((state) => state.user);
   return (
-      <AppContext.Provider value = {
-        {
-          socket, currentRoom, setCurrentRoom, members, setMembers, messages,
-              setMessages, privateMemberMsg, setPrivateMemberMsg, rooms,
-              setRooms, newMessages, setNewMessages
-        }
-      }><BrowserRouter><Navigation /><Routes>
-      <Route path = "/" element =
-       {
-         <Home />
-       } />
-                    {!user && (
-                        <>
-                            <Route path="/login
-         " element={<Login />} />
-       < Route path =
-           "/signup" element = { <Signup /> } />
-                        </>)
+    <AppContext.Provider
+      value={{
+        socket,
+        currentRoom,
+        setCurrentRoom,
+        members,
+        setMembers,
+        messages,
+        setMessages,
+        privateMemberMsg,
+        setPrivateMemberMsg,
+        rooms,
+        setRooms,
+        newMessages,
+        setNewMessages,
+      }}
+    >
+      <BrowserRouter>
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          {!user && (
+            <>
+              <Route
+                path="/login
+         "
+                element={<Login />}
+              />
+              <Route path="/signup" element={<Signup />} />
+            </>
+          )}
+          <Route path="/chat" element={<Chat />} />
+        </Routes>
+      </BrowserRouter>
+    </AppContext.Provider>
+  );
 }
-                    <Route path="/chat" element={<Chat />} />
-                </Routes>
-            </BrowserRouter>
-        </AppContext.Provider>
-    );
-                    }
 
-                    export default App;
+export default App;
