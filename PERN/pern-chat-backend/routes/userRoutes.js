@@ -1,16 +1,16 @@
 const router = require("express").Router();
-const { knex } = require("../config/db/index");
+const {knex} = require("../config/db/index");
 
 const USER_TABLE_NAME = "users";
 
 // creating user
 router.post("/", async (req, res) => {
   try {
-    const { name, email, password, picture } = req.body;
+    const {name, email, password, picture} = req.body;
     console.log(req.body);
     const user = (await knex(USER_TABLE_NAME)
-      .insert({ name, email, password, picture })
-      .returning("*"))[0];
+                      .insert({name, email, password, picture})
+                      .returning("*"))[0];
     res.status(201).json(user);
   } catch (e) {
     let msg;
@@ -28,13 +28,13 @@ router.post("/", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await knex(USER_TABLE_NAME).where({ email, password }).first();
+    const {email, password} = req.body;
+    const user = await knex(USER_TABLE_NAME).where({email, password}).first();
     console.log("login route:", user);
     if (!user) {
       throw new Error("User not found");
     }
-    await knex("users").where({ email }).update({ status: "online" });
+    await knex("users").where({email}).update({status : "online"});
     res.status(200).json(user);
   } catch (e) {
     console.log(e);
