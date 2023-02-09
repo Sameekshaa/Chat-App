@@ -39,10 +39,9 @@ function MessageForm() {
     setMessages(roomMessages);
   });
 
-  socket.on('new-messages', (newMessage) => {
+  socket.on("new-messages", (newMessage) => {
     setMessages([...messages, newMessage]);
   });
-
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -104,11 +103,11 @@ function MessageForm() {
                 )}
                 {console.log("user", user.email)}
                 <div
-                    className={
-                      sender?.email === user?.email
-                        ? "message"
-                        : "incoming-message"
-                    }
+                  className={
+                    sender?.email === user?.email
+                      ? "message"
+                      : "incoming-message"
+                  }
                 >
                   <div className="message-inner">
                     <div className="d-flex align-items-center mb-3">
