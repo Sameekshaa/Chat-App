@@ -1,7 +1,8 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Sidebar from "../components/Sidebar";
+import {Col, Container, Row} from "react-bootstrap";
+
 import MessageForm from "../components/MessageForm";
+import Sidebar from "../components/Sidebar";
 
 function Chat() {
     return (
