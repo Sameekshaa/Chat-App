@@ -1,5 +1,5 @@
 import React from "react";
-import { io } from "socket.io-client";
+import {io} from "socket.io-client";
 
 const SOCKET_URL = "http://localhost:5001";
 // const SOCKET_URL = "https://chat-app-backend-bwff.onrender.com";
