@@ -51,14 +51,14 @@ function App() {
               />
               <Route
                 path="/signup
-                           "
+  "
                 element={<Signup />}
               />
             </>
           )}
           <Route
             path="/chat
-              "
+"
             element={<Chat />}
           />
         </Routes>
