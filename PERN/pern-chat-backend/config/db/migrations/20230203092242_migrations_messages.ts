@@ -2,9 +2,9 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function (knex) {
+exports.up = function (knex:any) {
   return knex.schema
-    .createTable("messages", (table) => {
+    .createTable("messages", (table:any) => {
       table.increments("id").primary();
       table.text("content");
       table.uuid("from");
@@ -14,7 +14,7 @@ exports.up = function (knex) {
       table.timestamps(true, true);
     })
     .then(() => console.log("Table created"))
-    .catch((error) => console.error(error))
+    .catch((error:any) => console.error(error))
     .finally(() => knex.destroy());
 };
 
@@ -22,6 +22,6 @@ exports.up = function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {
+exports.down = function (knex:any) {
   return knex.schema.dropTable("messages");
 };

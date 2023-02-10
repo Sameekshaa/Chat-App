@@ -1,10 +1,12 @@
-const express = require("express");
-const app = express();
-const userRoutes = require("./routes/userRoutes");
+import express, { Express, Request, Response } from "express";
+const app: Express = express();
+const userRoutes = require("../routes/userRoutes");
 const rooms = ["General", "Fullstack", "Data", "AI"];
 const cors = require("cors");
-const { knex } = require("./config/db/index");
-require("dotenv").config();
+const { knex } = require("../config/db/index");
+import dotenv from "dotenv";
+
+dotenv.config();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -19,14 +21,14 @@ const server = require("http").createServer(app);
 const PORT = 5001;
 const io = require("socket.io")(server, {
   cors: {
-    origin: (`${process.env.SERVER_ORIGIN}`),
-    
+    origin: `${process.env.SERVER_ORIGIN}`,
+
     // origin: 'https://chat-app-backend-bwff.onrender.com',
     methods: ["GET", "POST"],
   },
 });
 
-async function getLastMessagesFromRoom(room) {
+async function getLastMessagesFromRoom(room: string): Promise<any[]> {
   return await knex
     .select("messages.*", "users.name", "users.email", "users.picture")
     .from(MESSAGE_TABLE_NAME)
@@ -37,13 +39,13 @@ async function getLastMessagesFromRoom(room) {
 
 // socket connection
 
-io.on("connection", (socket) => {
+io.on("connection", (socket: any) => {
   socket.on("new-user", async () => {
     const members = await knex(USER_TABLE_NAME).select(`${USER_TABLE_NAME}.*`);
     io.emit("new-user", members);
   });
 
-  socket.on("join-room", async (newRoom, previousRoom) => {
+  socket.on("join-room", async (newRoom: string, previousRoom: string) => {
     socket.join(newRoom);
     socket.leave(previousRoom);
     let roomMessages = (await getLastMessagesFromRoom(newRoom)).map(
@@ -61,38 +63,47 @@ io.on("connection", (socket) => {
     socket.emit("room-messages", roomMessages);
   });
 
-  socket.on("message-room", async (room, content, sender, time, date) => {
-    let newMessage = (
-      await knex(MESSAGE_TABLE_NAME)
-        .insert({
-          content,
-          from: sender.id,
-          time,
-          date,
-          to: room,
-        })
-        .returning("*")
-    )[0];
+  socket.on(
+    "message-room",
+    async (
+      room: string,
+      content: string,
+      sender: any,
+      time: string,
+      date: string
+    ) => {
+      let newMessage = (
+        await knex(MESSAGE_TABLE_NAME)
+          .insert({
+            content,
+            from: sender.id,
+            time,
+            date,
+            to: room,
+          })
+          .returning("*")
+      )[0];
 
-    newMessage.from = {
-      id: sender.id,
-      name: sender.name,
-      email: sender.email,
-      picture: sender.picture,
-    };
+      newMessage.from = {
+        id: sender.id,
+        name: sender.name,
+        email: sender.email,
+        picture: sender.picture,
+      };
 
-    socket.broadcast.emit("new-messages", newMessage);
-    console.log("newmsg", newMessage);
+      socket.broadcast.emit("new-messages", newMessage);
+      console.log("newmsg", newMessage);
 
-    // let roomMessages = await getLastMessagesFromRoom(room);
-    // // // sending message to room
-    // io.to(room).emit("room-messages", roomMessages);
-    // socket.broadcast.emit("notifications", room);
+      // let roomMessages = await getLastMessagesFromRoom(room);
+      // // // sending message to room
+      // io.to(room).emit("room-messages", roomMessages);
+      // socket.broadcast.emit("notifications", room);
 
-    return;
-  });
+      return;
+    }
+  );
 
-  app.post("/logout", async (req, res) => {
+  app.post("/logout", async (req:Request, res:Response) => {
     console.log("logout route body: ", req.body);
     try {
       const { id } = req.body;
@@ -112,19 +123,10 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get("/rooms", (req, res) => {
+app.get("/rooms", (res:Response) => {
   res.json(rooms);
 });
 
 server.listen(PORT, () => {
   console.log("listening to port", PORT);
-});
-
-// unhandled promise rejetcion
-process.on("unhandledRejection", (err) => {
-  console.log(`Error: ${err.message}`);
-  console.log("Shutting down server  ");
-  server.close(() => {
-    process.exit(1);
-  });
 });

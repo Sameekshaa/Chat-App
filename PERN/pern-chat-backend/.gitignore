@@ -5,3 +5,8 @@
 # misc
 .env
 .env.local
+
+
+# TS -incremental file
+tsconfig.tsbuildinfo
+node_module

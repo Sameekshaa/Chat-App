@@ -1,7 +1,7 @@
 const { userRoutes } = require("./userRoutes");
 const { server } = require("../server");
-const request = require("supertest");
-const { knex } = require("../config/db/index");
+const req = require("supertest");
+const { knex } = require("../../config/db/index");
 const rooms = ["General", "Fullstack", "Data", "AI"];
 
 // importing mock user data
@@ -29,7 +29,7 @@ describe("Register user", () => {
 
   it("Returns 201 if user is inserted", async () => {
     // jest.setTimeout(10000)
-    const res = await request("localhost:5001").post("/users").send(user);
+    const res = await req("localhost:5001").post("/users").send(user);
     // console.log("respsone for register", res.body.name);
     expect(res.statusCode).toEqual(201);
     expect(res.body.name).toBe(user.name);
@@ -39,7 +39,7 @@ describe("Register user", () => {
 
   it("Should save user to database", async () => {
     jest.setTimeout(10000);
-    const res = await request("localhost:5001").post("/users").send(user);
+    const res = await req("localhost:5001").post("/users").send(user);
     expect(res.body.name).toBe(user.name);
     expect(res.body.id).toBeTruthy();
     expect(res.body.created_at).toBeTruthy();
@@ -60,12 +60,12 @@ describe("Login User", () => {
   });
 
   it("should return status code 200 for userlogin", async () => {
-    const res = await request("localhost:5001").post("/users").send(user);
+    const res = await req("localhost:5001").post("/users").send(user);
     const login = {
       email: res.body.email,
       password: res.body.password,
     };
-    const logUser = await request("localhost:5001")
+    const logUser = await req("localhost:5001")
       .post("/users/login")
       .send(login);
     expect(logUser.statusCode).toEqual(200);
@@ -86,7 +86,7 @@ describe("Get Rooms", () => {
 
   it("GET /rooms should return rooms", async () => {
     //   jest.setTimeout(10000);
-    const res = await request("localhost:5001").get("/rooms");
+    const res = await req("localhost:5001").get("/rooms");
     expect(res.statusCode).toEqual(200);
     console.log("res body", res.body);
     expect(res.body).toStrictEqual(rooms);

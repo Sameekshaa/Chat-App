@@ -1,10 +1,12 @@
+import express, { Express, Request, Response } from "express";
+const app: Express = express();
 const router = require("express").Router();
 const { knex } = require("../config/db/index");
 
 const USER_TABLE_NAME = "users";
 
 // creating user
-router.post("/", async (req, res) => {
+router.post("/", async (req:Request, res:Response) => {
   try {
     const { name, email, password, picture } = req.body;
     console.log(req.body);
@@ -27,7 +29,7 @@ router.post("/", async (req, res) => {
 });
 
 // login user
-router.post("/login", async (req, res) => {
+router.post("/login", async (req:Request, res:Response) => {
   try {
     const { email, password } = req.body;
     const user = await knex(USER_TABLE_NAME).where({ email, password }).first();
