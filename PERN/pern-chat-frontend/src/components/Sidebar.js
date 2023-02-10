@@ -7,10 +7,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppContext } from "../context/appContext";
 import { addNotifications, resetNotifications } from "../features/userSlice";
 
+// Sidebar component
 function Sidebar() {
+  // Use the 'user' state from the Redux store
   const user = useSelector((state) => state.user);
-  console.log("user", user);
+  // console.log("user", user);
   const dispatch = useDispatch();
+
+  // Context data from AppContext
   const {
     socket,
     setMembers,
@@ -23,27 +27,34 @@ function Sidebar() {
     currentRoom,
   } = useContext(AppContext);
 
+  // Function to join a room
   console.log("socket", socket); // socket connection
   // console.log("members", members);
 
   function joinRoom(room, isPublic = true) {
+    // Checking if the user is logged in
     if (!user) {
       return alert("Please login");
     }
+    // Emitting an event to join a room
     socket.emit("join-room", room, currentRoom);
     setCurrentRoom(room);
 
+    // Setting the private member message to null
     if (isPublic) {
       setPrivateMemberMsg(null);
     }
-    // dispatch for notifications
+
+    // Dispatch for notifications
     dispatch(resetNotifications(room));
   }
 
+  // Handling notifications
   socket.off("notifications").on("notifications", (room) => {
     if (currentRoom !== room) dispatch(addNotifications(room));
   });
 
+  // useEffect hook to join the General room when the user logs in
   useEffect(() => {
     if (user) {
       setCurrentRoom("General");
@@ -53,17 +64,20 @@ function Sidebar() {
     }
   }, []);
 
+  // Handling a new user joining the chat room
   socket.off("new-user").on("new-user", (payload) => {
     setMembers(payload);
   });
 
+  // Function to get the available rooms
   function getRooms() {
     // fetch("https://chat-app-backend-bwff.onrender.com/rooms")
-     fetch(`${process.env.REACT_APP_BASE_URL}/rooms`)
-       .then((res) => res.json())
-       .then((data) => setRooms(data));
+    fetch(`${process.env.REACT_APP_BASE_URL}/rooms`)
+      .then((res) => res.json())
+      .then((data) => setRooms(data));
   }
 
+  // Utility function to order the room ids
   function orderIds(id1, id2) {
     if (id1 > id2) {
       return id1 + "-" + id2;
@@ -72,18 +86,24 @@ function Sidebar() {
     }
   }
 
+  // Function to handle private member messages
   function handlePrivateMemberMsg(member) {
     setPrivateMemberMsg(member);
     const roomId = orderIds(user.id, member.id);
     joinRoom(roomId, false);
   }
 
+  // Checking if the user is logged in, if not return an empty component
   if (!user) {
     return <></>;
   }
+
+  // Rendering the sidebar component
   return (
     <>
       <h2>Available rooms</h2>
+
+      {/* List available tooms */}
       <ListGroup>
         {" "}
         {rooms.map((room, idx) => (
@@ -105,6 +125,8 @@ function Sidebar() {
             )}
           </ListGroup.Item>
         ))}
+
+      {/* List members */}
       </ListGroup>
       <h2>Members</h2>
       {members.map((member) => (

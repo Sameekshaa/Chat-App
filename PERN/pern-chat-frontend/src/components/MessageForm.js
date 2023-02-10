@@ -44,10 +44,9 @@ function MessageForm() {
     setMessages(roomMessages);
   });
 
-  socket.on('new-messages', (newMessage) => {
+  socket.on("new-messages", (newMessage) => {
     setMessages([...messages, newMessage]);
   });
-
 
   function handleSubmit(e) {
     e.preventDefault();

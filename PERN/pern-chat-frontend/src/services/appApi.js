@@ -41,6 +41,10 @@ const appApi = createApi({
   }),
 });
 
-export const { useSignupUserMutation, useLoginUserMutation, useLogoutUserMutation } = appApi;
+export const {
+  useSignupUserMutation,
+  useLoginUserMutation,
+  useLogoutUserMutation,
+} = appApi;
 
 export default appApi;

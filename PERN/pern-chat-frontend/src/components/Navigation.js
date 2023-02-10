@@ -6,14 +6,20 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useLogoutUserMutation } from "../services/appApi";
 
+// Navigation component
 function Navigation() {
+  // Use the 'user' state from the Redux store
   const user = useSelector((state) => state.user);
+  // Use the 'useLogoutUserMutation' hook for logging out the user
   const [logoutUser] = useLogoutUserMutation();
+  // Use the 'useNavigate' hook
   const navigate = useNavigate();
+
+  // Function to handle logout action by calling the logoutUser function
   async function handleLogout(e) {
     e.preventDefault();
     await logoutUser({ id: user.id });
-    // redirect to home page
+    // Redirect to home page
     navigate("/");
   }
 
@@ -21,8 +27,10 @@ function Navigation() {
     //Navbar 
     <Navbar bg="light" expand="lg">
       <Container>
+        {/* Link to the home page */}
         <LinkContainer to="/">
           <Navbar.Brand>
+            {/* Display the logo */}
             <img src={logo} style={{ width: 50, height: 50 }} alt="logo" />
           </Navbar.Brand>
         </LinkContainer>
@@ -41,6 +49,7 @@ function Navigation() {
               <NavDropdown
                 title={
                   <>
+                    {/* Display the user's profile picture */}
                     <img
                       src={user.picture || ""}
                       style={{
@@ -52,6 +61,7 @@ function Navigation() {
                       }}
                       alt="user profile"
                     />
+                    {/* Display the user's name */}
                     {user.name || ""}
                   </>
                 }
@@ -59,6 +69,7 @@ function Navigation() {
                 id="basic-nav-dropdown"
               >
                 <NavDropdown.Item>
+                  {/* Logout button */}
                   <Button variant="danger" onClick={handleLogout}>
                     Logout
                   </Button>
