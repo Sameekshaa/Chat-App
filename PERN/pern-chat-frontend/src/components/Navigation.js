@@ -18,6 +18,7 @@ function Navigation() {
   }
 
   return (
+    //Navbar 
     <Navbar bg="light" expand="lg">
       <Container>
         <LinkContainer to="/">
@@ -25,15 +26,17 @@ function Navigation() {
             <img src={logo} style={{ width: 50, height: 50 }} alt="logo" />
           </Navbar.Brand>
         </LinkContainer>
+
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
+            {/* if user is not logged in login link is displayed*/}
             {!user && (
               <LinkContainer to="/login">
                 <Nav.Link>Login</Nav.Link>
               </LinkContainer>
             )}
-
+            {/* if user is logged in users name and id is displayed  */}
             {user && (
               <NavDropdown
                 title={
@@ -52,6 +55,7 @@ function Navigation() {
                     {user.name || ""}
                   </>
                 }
+                //Navigation dropdown to logout user
                 id="basic-nav-dropdown"
               >
                 <NavDropdown.Item>

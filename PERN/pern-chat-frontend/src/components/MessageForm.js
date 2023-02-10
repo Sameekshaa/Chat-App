@@ -15,7 +15,12 @@ function MessageForm() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
+  /**
+ * Returns a formatted date string based on the given date.
+ * 
+ * @param {Date} date - The date to format.
+ * @returns {string} The formatted date string in the format of MM/DD/YYYY.
+ */
   function getFormattedDate() {
     const date = new Date();
     const year = date.getFullYear();
@@ -28,7 +33,7 @@ function MessageForm() {
 
     return month + "/" + day + "/" + year;
   }
-
+  // Function for scrolling at last message
   function scrollToBottom() {
     messageEndRef.current?.scrollIntoView({ behavior: "instant" });
   }
