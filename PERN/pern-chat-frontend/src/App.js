@@ -45,20 +45,17 @@ function App() {
           {!user && (
             <>
               <Route
-                path="/login
-  "
+                path="/login"
                 element={<Login />}
               />
               <Route
-                path="/signup
-  "
+                path="/signup"
                 element={<Signup />}
               />
             </>
           )}
           <Route
-            path="/chat
-"
+            path="/chat"
             element={<Chat />}
           />
         </Routes>
