@@ -2,13 +2,14 @@ import express, { Express, Request, Response } from "express";
 const app: Express = express();
 const router = require("express").Router();
 const { knex } = require("../config/db/index");
+import { SignupUsers } from "../src/types/instance";
 
 const USER_TABLE_NAME = "users";
 
 // creating user
 router.post("/", async (req:Request, res:Response) => {
   try {
-    const { name, email, password, picture } = req.body;
+    const { name, email, password, picture } = req.body as SignupUsers;
     console.log(req.body);
     const user = (
       await knex(USER_TABLE_NAME)
