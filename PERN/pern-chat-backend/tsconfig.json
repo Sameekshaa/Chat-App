@@ -12,8 +12,8 @@
     "src/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/routes/mockData.ts",
-    "src/routes/userRoutes.ts",
+    "routes/mockData.ts",
+    "routes/userRoutes.ts",
     "src/server.ts",
     "config/knexfile.ts"
   ],

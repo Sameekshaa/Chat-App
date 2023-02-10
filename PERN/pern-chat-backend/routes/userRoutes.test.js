@@ -1,7 +1,7 @@
 const { userRoutes } = require("./userRoutes");
-const { server } = require("../server");
+const { server } = require("../src/server");
 const req = require("supertest");
-const { knex } = require("../../config/db/index");
+const { knex } = require("../config/db/index");
 const rooms = ["General", "Fullstack", "Data", "AI"];
 
 // importing mock user data
