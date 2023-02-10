@@ -1,7 +1,15 @@
 const knexfile = require("../knexfile");
 
-const knex:any = require("knex")(knexfile);
+const knex: any = require("knex")(knexfile);
 
-module.exports = { knex };
+/**
+ * Learn TypeScript: multiple export es6 way
+ */
+export { knex };
+// module.exports = { knex };
 
-export {};
+/**
+ * Learn Typescript: default export es6 way
+ */
+export default knex;
+// export {};

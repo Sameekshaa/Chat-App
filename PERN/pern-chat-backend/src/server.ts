@@ -1,11 +1,19 @@
 import express, { Express, Request, Response } from "express";
 const app: Express = express();
 const userRoutes = require("../routes/userRoutes");
-const rooms = ["General", "Fullstack", "Data", "AI"];
-const cors = require("cors");
-const { knex } = require("../config/db/index");
+
+/**
+ * Learn TypeScript: Convert imports to es6
+ */
+import cors from "cors";
+import { knex } from "../config/db/index";
 import dotenv from "dotenv";
 import { LogoutUsers } from "../src/types/instance";
+
+/**
+ * Learn TypeScript: Write type for constants
+ */
+const rooms: string[] = ["General", "Fullstack", "Data", "AI"];
 
 dotenv.config();
 
@@ -28,6 +36,7 @@ const io = require("socket.io")(server, {
     methods: ["GET", "POST"],
   },
 });
+
 
 async function getLastMessagesFromRoom(room: string): Promise<any[]> {
   return await knex
@@ -104,7 +113,7 @@ io.on("connection", (socket: any) => {
     }
   );
 
-  app.post("/logout", async (req:Request, res:Response) => {
+  app.post("/logout", async (req: Request, res: Response) => {
     console.log("logout route body: ", req.body);
     try {
       const { id } = req.body as LogoutUsers;
@@ -124,7 +133,7 @@ io.on("connection", (socket: any) => {
   });
 });
 
-app.get("/rooms", (req:Request, res:Response) => {
+app.get("/rooms", (req: Request, res: Response) => {
   res.json(rooms);
 });
 
