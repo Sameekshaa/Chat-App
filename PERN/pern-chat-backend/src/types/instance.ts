@@ -9,3 +9,7 @@ export interface LoginUsers {
   email: string;
   password: string;
 }
+
+export interface LogoutUsers {
+  id:string;
+}

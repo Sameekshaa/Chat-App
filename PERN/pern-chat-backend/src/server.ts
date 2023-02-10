@@ -5,6 +5,7 @@ const rooms = ["General", "Fullstack", "Data", "AI"];
 const cors = require("cors");
 const { knex } = require("../config/db/index");
 import dotenv from "dotenv";
+import { LogoutUsers } from "../src/types/instance";
 
 dotenv.config();
 
@@ -106,7 +107,7 @@ io.on("connection", (socket: any) => {
   app.post("/logout", async (req:Request, res:Response) => {
     console.log("logout route body: ", req.body);
     try {
-      const { id } = req.body;
+      const { id } = req.body as LogoutUsers;
       await knex(USER_TABLE_NAME).where({ id: id }).update({
         status: "offline",
       });
