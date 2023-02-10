@@ -1,18 +1,21 @@
 {
-    "compilerOptions": {
-      "module": "CommonJS",
-      "moduleResolution" : "node",
-      "target": "es6",
-      "noImplicitAny": true,
-      "sourceMap": true,
-      "outDir": "dist",
-      "esModuleInterop": true
-    },
-    "include": [
-      "src/**/*.ts","**/*.ts", "**/*.tsx"
-, "src/routes/mockData.ts", "src/routes/userRoutes.ts", "src/server.ts", "config/knexfile.ts"    ],
-    "exclude": [
-      "node_modules",
-      "**/*.spec.ts"
-    ]
-  }
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "target": "es6",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "esModuleInterop": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/routes/mockData.ts",
+    "src/routes/userRoutes.ts",
+    "src/server.ts",
+    "config/knexfile.ts"
+  ],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
