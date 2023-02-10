@@ -4,3 +4,8 @@ export interface SignupUsers {
   password:string;
   picture:string;
 }
+
+export interface LoginUsers {
+  email: string;
+  password: string;
+}

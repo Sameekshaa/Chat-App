@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from "express";
 const app: Express = express();
 const router = require("express").Router();
 const { knex } = require("../config/db/index");
-import { SignupUsers } from "../src/types/instance";
+import { LoginUsers, SignupUsers } from "../src/types/instance";
 
 const USER_TABLE_NAME = "users";
 
@@ -32,7 +32,7 @@ router.post("/", async (req:Request, res:Response) => {
 // login user
 router.post("/login", async (req:Request, res:Response) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body as LoginUsers;
     const user = await knex(USER_TABLE_NAME).where({ email, password }).first();
     console.log("login route:", user);
     if (!user) {

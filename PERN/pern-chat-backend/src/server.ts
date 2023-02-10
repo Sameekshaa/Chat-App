@@ -123,7 +123,7 @@ io.on("connection", (socket: any) => {
   });
 });
 
-app.get("/rooms", (res:Response) => {
+app.get("/rooms", (req:Request, res:Response) => {
   res.json(rooms);
 });
 
