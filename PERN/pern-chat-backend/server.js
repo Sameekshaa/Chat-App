@@ -1,22 +1,29 @@
 const express = require("express");
-const app = express();
+const app = express(); //Instantiate express
 const userRoutes = require("./routes/userRoutes");
 const rooms = ["General", "Fullstack", "Data", "AI"];
 const cors = require("cors");
 const { knex } = require("./config/db/index");
+
 //Use express middleware to handle request body in JSON and URL-encoded format
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); //to be able to receive data from frontend
 app.use(express.json());
+
 //Use CORS middleware to handle Cross-Origin Resource Sharing
-app.use(cors());
+app.use(cors()); //allows frontend and backend to communicate
+
 //Mount the user routes at the '/user' endpoint
 app.use("/users", userRoutes);
+
 // Constants for the name of the user and message tables in the database
 const USER_TABLE_NAME = "users";
 const MESSAGE_TABLE_NAME = "messages";
+
 // Create a HTTP server using express app as the request handler
 const server = require("http").createServer(app);
 const PORT = 5001;
+
+
 //Attach a Socket.IO instance to the HTTP server
 const io = require("socket.io")(server, {
   cors: {
@@ -61,6 +68,7 @@ io.on("connection", (socket) => {
     console.log("roomMessages", roomMessages);
     socket.emit("room-messages", roomMessages);
   });
+  ``
   // Handle a 'message-room' event by inserting the message into the database and emitting it to the specified room
   socket.on("message-room", async (room, content, sender, time, date) => {
     let newMessage = (

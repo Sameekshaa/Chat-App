@@ -5,8 +5,12 @@ import { Button, Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 
+// Home component
 function Home() {
+  // Retrieve the user data from the global state using the useSelector hook
   const user = useSelector((state) => state.user);
+
+  // Render the Home component
   return (
     <Row>
       <Col
@@ -19,7 +23,8 @@ function Home() {
           {!user && (
             <LinkContainer to="/login">
               <Button variant="success">
-                Get Started{" "}
+                Get Started 
+                {/* Icon */}
                 <i className="fas fa-comments home-message-icon"></i>
               </Button>
             </LinkContainer>
@@ -31,4 +36,5 @@ function Home() {
   );
 }
 
+// Export the Home component as the default export
 export default Home;
