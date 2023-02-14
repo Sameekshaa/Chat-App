@@ -14,7 +14,6 @@ const reducer = combineReducers({
   [appApi.reducerPath]: appApi.reducer,
 });
 
-// Set up persist configuration for storage
 const persistConfig = {
   key: "root",
   storage,
@@ -22,12 +21,16 @@ const persistConfig = {
 };
 
 // persist our store
+
 const persistedReducer = persistReducer(persistConfig, reducer);
 
 // creating the store
+
 const store = configureStore({
   reducer: persistedReducer,
   middleware: [thunk, appApi.middleware],
 });
+
+export type RootState = ReturnType<typeof store.getState>;
 
 export default store;

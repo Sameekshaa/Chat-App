@@ -24,7 +24,7 @@ function Navigation() {
   }
 
   return (
-    // Render the navigation bar using react-bootstrap components
+    //Navbar 
     <Navbar bg="light" expand="lg">
       <Container>
         {/* Link to the home page */}
@@ -35,18 +35,16 @@ function Navigation() {
           </Navbar.Brand>
         </LinkContainer>
 
-        {/* Toggle button for the navigation links */}
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            {/* Show the Login link only if the user is not authenticated */}
+            {/* if user is not logged in login link is displayed*/}
             {!user && (
               <LinkContainer to="/login">
                 <Nav.Link>Login</Nav.Link>
               </LinkContainer>
             )}
-
-            {/* Show the user profile and Logout button only if the user is authenticated */}
+            {/* if user is logged in users name and id is displayed  */}
             {user && (
               <NavDropdown
                 title={
@@ -67,6 +65,7 @@ function Navigation() {
                     {user.name || ""}
                   </>
                 }
+                //Navigation dropdown to logout user
                 id="basic-nav-dropdown"
               >
                 <NavDropdown.Item>

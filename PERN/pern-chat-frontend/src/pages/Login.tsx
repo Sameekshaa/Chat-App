@@ -1,18 +1,20 @@
 import "./Login.css";
 
-import React, { useContext, useState } from "react";
+import React, { ReactNode, useContext, useState } from "react";
 import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 
 import { AppContext } from "../context/appContext";
 import { useLoginUserMutation } from "../services/appApi";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
+import { SerializedError } from "@reduxjs/toolkit";
 
 // Login component
-function Login() {
+const Login: React.FC = () => {
   // State to store email entered by the user
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState<string>("");
   // State to store password entered by the user
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState<string>("");
 
   // Hook for navigation
   const navigate = useNavigate();
@@ -20,17 +22,22 @@ function Login() {
   // Context to access the socket object from the AppContext
   const { socket } = useContext(AppContext);
 
-  // GraphQL mutation hook to login the user
+  // User mutation hook to login the user
   const [loginUser, { isLoading, error }] = useLoginUserMutation();
 
+  interface LoginResult {
+    data?: any;
+    error?: FetchBaseQueryError | SerializedError;
+  }
+
   // Function to handle login form submission
-  function handleLogin(e) {
+  function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     // Prevent default form submit behavior
     e.preventDefault();
     // login logic
     // Call the loginUser mutation with the email and password entered by the user
-    loginUser({ email, password }).then(({ data }) => {
-      if (data) {
+    loginUser({ email, password }).then((result: LoginResult) => {
+      if (result.data) {
         // socket work
         // Emit a "new-user" event to the socket
         socket.emit("new-user");
@@ -55,7 +62,7 @@ function Login() {
             {/* Email form group */}
             <Form.Group className="mb-3" controlId="formBasicEmail">
               {/* Display error, if any */}
-              {error && <p className="alert alert-danger">{error.data}</p>}
+              {error && <p className="alert alert-danger">{'data' in error && error.data as ReactNode}</p>}
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 type="email"
@@ -85,7 +92,7 @@ function Login() {
             <Button variant="primary" type="submit">
               {isLoading ? <Spinner animation="grow" /> : "Login"}
             </Button>
-            
+
             <div className="py-4">
               <p className="text-center">
                 Don't have an account ? <Link to="/signup">Signup</Link>
@@ -96,6 +103,6 @@ function Login() {
       </Row>
     </Container>
   );
-}
+};
 
 export default Login;

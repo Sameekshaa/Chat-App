@@ -3,14 +3,14 @@ import "./Sidebar.css";
 import React, { useContext, useEffect } from "react";
 import { Col, ListGroup, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-
+import { SliceState } from "../features/userSlice";
 import { AppContext } from "../context/appContext";
 import { addNotifications, resetNotifications } from "../features/userSlice";
 
 // Sidebar component
-function Sidebar() {
+const Sidebar: React.FC = () => {
   // Use the 'user' state from the Redux store
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state: SliceState) => state.user);
   // console.log("user", user);
   const dispatch = useDispatch();
 
@@ -31,7 +31,7 @@ function Sidebar() {
   console.log("socket", socket); // socket connection
   // console.log("members", members);
 
-  function joinRoom(room, isPublic = true) {
+  function joinRoom(room: string, isPublic: boolean = true) {
     // Checking if the user is logged in
     if (!user) {
       return alert("Please login");
@@ -42,7 +42,11 @@ function Sidebar() {
 
     // Setting the private member message to null
     if (isPublic) {
-      setPrivateMemberMsg(null);
+      setPrivateMemberMsg({
+        id: "",
+        name: "",
+        picture: "",
+      });
     }
 
     // Dispatch for notifications
@@ -50,7 +54,7 @@ function Sidebar() {
   }
 
   // Handling notifications
-  socket.off("notifications").on("notifications", (room) => {
+  socket.off("notifications").on("notifications", (room: string) => {
     if (currentRoom !== room) dispatch(addNotifications(room));
   });
 
@@ -78,7 +82,7 @@ function Sidebar() {
   }
 
   // Utility function to order the room ids
-  function orderIds(id1, id2) {
+  function orderIds(id1: string | number, id2: string | number) {
     if (id1 > id2) {
       return id1 + "-" + id2;
     } else {
@@ -87,7 +91,11 @@ function Sidebar() {
   }
 
   // Function to handle private member messages
-  function handlePrivateMemberMsg(member) {
+  function handlePrivateMemberMsg(member: any) {
+    if (!user) {
+      return;
+    }
+
     setPrivateMemberMsg(member);
     const roomId = orderIds(user.id, member.id);
     joinRoom(roomId, false);
@@ -106,7 +114,7 @@ function Sidebar() {
       {/* List available tooms */}
       <ListGroup>
         {" "}
-        {rooms.map((room, idx) => (
+        {rooms.map((room: string, idx) => (
           <ListGroup.Item
             key={idx}
             onClick={() => joinRoom(room)}
@@ -125,11 +133,10 @@ function Sidebar() {
             )}
           </ListGroup.Item>
         ))}
-
-      {/* List members */}
+        {/* List members */}
       </ListGroup>
       <h2>Members</h2>
-      {members.map((member) => (
+      {members.map((member: any) => (
         <ListGroup.Item
           key={member.id}
           style={{ cursor: "pointer" }}
@@ -166,6 +173,6 @@ function Sidebar() {
       ))}
     </>
   );
-}
+};
 
 export default Sidebar;

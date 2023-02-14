@@ -13,13 +13,17 @@ function Signup() {
   const [name, setName] = useState("");
   const [signupUser, { isLoading, error }] = useSignupUserMutation();
   const navigate = useNavigate();
-  // image upload states
-  const [image, setImage] = useState(null);
-  const [upladingImg, setUploadingImg] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
 
-  function validateImg(e) {
-    const file = e.target.files[0];
+  // image upload states
+  const [image, setImage] = useState<File | null>(null);
+  const [uploadingImg, setUploadingImg] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  function validateImg(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) {
+      return;
+    }
     if (file.size >= 1048576) {
       return alert("Max file size is 1mb");
     } else {
@@ -28,7 +32,10 @@ function Signup() {
     }
   }
 
-  async function uploadImage() {
+  async function uploadImage(image: File) {
+    if (!image) {
+      return;
+    }
     const data = new FormData();
     data.append("file", image);
     data.append("upload_preset", "hcuhbvf7");
@@ -50,15 +57,14 @@ function Signup() {
     }
   }
 
-  async function handleSignup(e) {
+  async function handleSignup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!image) return alert("Please upload your profile picture");
     const url = await uploadImage(image);
     console.log(url);
-    // signup the user
-    signupUser({ name, email, password, picture: url }).then(({ data }) => {
-      if (data) {
-        console.log(data);
+    signupUser({ name, email, password, picture: url }).then((result) => {
+      if ("data" in result) {
+        console.log(result.data);
         navigate("/chat");
       }
     });
@@ -93,7 +99,11 @@ function Signup() {
                 onChange={validateImg}
               />
             </div>
-            {error && <p className="alert alert-danger">{error.data}</p>}
+            {error && (
+              <p className="alert alert-danger">
+                {"data" in error && (error.data as React.ReactNode)}
+              </p>
+            )}
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -126,7 +136,7 @@ function Signup() {
               />
             </Form.Group>
             <Button variant="primary" type="submit">
-              {upladingImg || isLoading ? "Signing you up..." : "Signup"}
+              {uploadingImg || isLoading ? "Signing you up..." : "Signup"}
             </Button>
             <div className="py-4">
               <p className="text-center">
