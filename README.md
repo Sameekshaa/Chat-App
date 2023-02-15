@@ -67,5 +67,5 @@ This is a real-time chat application built using Postgresql, Node.js, React, and
 ## Credits and references
 - React.js documentation
 - Express documentation
-- MongoDB documentation
+- Postgresql documentation
 
