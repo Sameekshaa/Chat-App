@@ -6,7 +6,7 @@ console.log("REACT_APP_BASE_URL", process.env.REACT_APP_BASE_URL);
 const appApi = createApi({
   reducerPath: "appApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.REACT_APP_BASE_URL}` || "http://localhost:5001",
+    baseUrl: `${process.env.REACT_APP_BASE_URL}`,
     // baseUrl: "https://chat-app-backend-bwff.onrender.com",
   }),
 
