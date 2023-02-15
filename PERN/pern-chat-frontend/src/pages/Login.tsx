@@ -50,9 +50,6 @@ const Login: React.FC = () => {
   return (
     <Container>
       <Row>
-        {/* Background column */}
-        <Col md={5} className="login__bg"></Col>
-
         {/* Login form column */}
         <Col
           md={7}
@@ -62,7 +59,11 @@ const Login: React.FC = () => {
             {/* Email form group */}
             <Form.Group className="mb-3" controlId="formBasicEmail">
               {/* Display error, if any */}
-              {error && <p className="alert alert-danger">{'data' in error && error.data as ReactNode}</p>}
+              {error && (
+                <p className="alert alert-danger">
+                  {"data" in error && (error.data as ReactNode)}
+                </p>
+              )}
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 type="email"
@@ -100,6 +101,8 @@ const Login: React.FC = () => {
             </div>
           </Form>
         </Col>
+        {/* Background column */}
+        <Col md={5} className="login__bg"></Col>
       </Row>
     </Container>
   );

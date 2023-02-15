@@ -31,3 +31,9 @@
     cursor: pointer;
     z-index: 99;
 }
+
+@media only screen and (max-width: 767px) {
+  /* .signup__bg {
+    background-image: none;
+  } */
+}

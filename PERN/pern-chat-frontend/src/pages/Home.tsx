@@ -16,12 +16,16 @@ const Home: React.FC = () => {
   return (
     <Row>
       <Col
+        xs={12}
         md={6}
+        lg={6}
         className="d-flex flex-direction-column align-items-center justify-content-center"
       >
-        <div>
-          <h1>Join our Network</h1>
-          <p>And connect with people around the world</p>{" "}
+        <div className="home_wrapper">
+          <div className="home_text">
+            <h1>Join our Network</h1>
+            <p>And connect with people around the world</p>{" "}
+          </div>
           {!user && (
             <LinkContainer to="/login">
               <Button variant="success">
@@ -33,7 +37,7 @@ const Home: React.FC = () => {
           )}
         </div>
       </Col>
-      <Col md={6} className="home__bg"></Col>
+      <Col xs={12} md={6} lg={6} className="home__bg"></Col>
     </Row>
   );
 };

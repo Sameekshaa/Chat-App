@@ -38,49 +38,42 @@ const Navigation: React.FC = () => {
           </Navbar.Brand>
         </LinkContainer>
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
-            {/* if user is not logged in login link is displayed*/}
-            {!user && (
-              <LinkContainer to="/login">
-                <Nav.Link>Login</Nav.Link>
-              </LinkContainer>
-            )}
-            {/* if user is logged in users name and id is displayed  */}
-            {user && (
-              <NavDropdown
-                title={
-                  <>
-                    {/* Display the user's profile picture */}
-                    <img
-                      src={user.picture || ""}
-                      style={{
-                        width: 30,
-                        height: 30,
-                        marginRight: 10,
-                        objectFit: "cover",
-                        borderRadius: "50%",
-                      }}
-                      alt="user profile"
-                    />
-                    {/* Display the user's name */}
-                    {user.name || ""}
-                  </>
-                }
-                //Navigation dropdown to logout user
-                id="basic-nav-dropdown"
-              >
-                <NavDropdown.Item>
-                  {/* Logout button */}
-                  <Button variant="danger" onClick={handleLogout}>
-                    Logout
-                  </Button>
-                </NavDropdown.Item>
-              </NavDropdown>
-            )}
-          </Nav>
-        </Navbar.Collapse>
+        <Nav className="ms-auto">
+          {/* if user is not logged in Chat App is displayed*/}
+          {!user && <h3>Chat App</h3>}
+          {/* if user is logged in users name and id is displayed  */}
+          {user && (
+            <NavDropdown
+              title={
+                <>
+                  {/* Display the user's profile picture */}
+                  <img
+                    src={user.picture || ""}
+                    style={{
+                      width: 30,
+                      height: 30,
+                      marginRight: 10,
+                      objectFit: "cover",
+                      borderRadius: "50%",
+                    }}
+                    alt="user profile"
+                  />
+                  {/* Display the user's name */}
+                  {user.name || ""}
+                </>
+              }
+              //Navigation dropdown to logout user
+              id="basic-nav-dropdown"
+            >
+              <NavDropdown.Item>
+                {/* Logout button */}
+                <Button variant="danger" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </NavDropdown.Item>
+            </NavDropdown>
+          )}
+        </Nav>
       </Container>
     </Navbar>
   );
