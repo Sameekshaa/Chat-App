@@ -136,41 +136,43 @@ const Sidebar: React.FC = () => {
         {/* List members */}
       </ListGroup>
       <h2>Members</h2>
-      {members.map((member: any) => (
-        <ListGroup.Item
-          key={member.id}
-          style={{ cursor: "pointer" }}
-          active={privateMemberMsg?.id === member?.id}
-          onClick={() => handlePrivateMemberMsg(member)}
-          disabled={member.id === user.id}
-        >
-          {" "}
-          <Row>
-            <Col xs={2} className="member-status">
-              <img
-                src={member.picture}
-                className="member-status-img"
-                alt="statusimg"
-              />
-              {member.status === "online" ? (
-                <i className="fas fa-circle sidebar-online-status"></i>
-              ) : (
-                <i className="fas fa-circle sidebar-offline-status"></i>
-              )}
-            </Col>
-            <Col xs={9}>
-              {member.name}
-              {member.id === user?.id && " (You)"}
-              {member.status === "offline" && " (Offline)"}
-            </Col>
-            <Col xs={1}>
-              <span className="badge rounded-pill bg-primary">
-                {/* {user.newMessages[orderIds(member.id, user.id)]} */}
-              </span>
-            </Col>
-          </Row>
-        </ListGroup.Item>
-      ))}
+      <ListGroup>
+        {members.map((member: any) => (
+          <ListGroup.Item
+            key={member.id}
+            style={{ cursor: "pointer" }}
+            active={privateMemberMsg?.id === member?.id}
+            onClick={() => handlePrivateMemberMsg(member)}
+            disabled={member.id === user.id}
+          >
+            {" "}
+            <Row>
+              <Col xs={2} className="member-status">
+                <img
+                  src={member.picture}
+                  className="member-status-img"
+                  alt="statusimg"
+                />
+                {member.status === "online" ? (
+                  <i className="fas fa-circle sidebar-online-status"></i>
+                ) : (
+                  <i className="fas fa-circle sidebar-offline-status"></i>
+                )}
+              </Col>
+              <Col xs={9}>
+                {member.name}
+                {member.id === user?.id && " (You)"}
+                {member.status === "offline" && " (Offline)"}
+              </Col>
+              <Col xs={1}>
+                <span className="badge rounded-pill bg-primary">
+                  {/* {user.newMessages[orderIds(member.id, user.id)]} */}
+                </span>
+              </Col>
+            </Row>
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
     </>
   );
 };
