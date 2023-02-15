@@ -26,29 +26,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
 const userRoutes = require("../routes/userRoutes");
-const rooms = ["General", "Fullstack", "Data", "AI"];
-const cors = require("cors");
-const { knex } = require("../config/db/index");
+/**
+ * Learn TypeScript: Convert imports to es6
+ */
+const cors_1 = __importDefault(require("cors"));
+const index_1 = require("../config/db/index");
 const dotenv_1 = __importDefault(require("dotenv"));
+/**
+ * Learn TypeScript: Write type for constants
+ */
+const rooms = ["General", "Fullstack", "Data", "AI"];
 dotenv_1.default.config();
+//Use express middleware to handle request body in JSON and URL-encoded format
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
-app.use(cors());
+app.use((0, cors_1.default)());
+//Mount the user routes at the '/user' endpoint
 app.use("/users", userRoutes);
+// Constants for the name of the user and message tables in the database
 const USER_TABLE_NAME = "users";
 const MESSAGE_TABLE_NAME = "messages";
+// Create a HTTP server using express app as the request handler
 const server = require("http").createServer(app);
 const PORT = 5001;
+//Attach a Socket.IO instance to the HTTP server
 const io = require("socket.io")(server, {
     cors: {
+        //Specify the allowed origin for incoming Websockets connection requests
         origin: `${process.env.SERVER_ORIGIN}`,
-        // origin: 'https://chat-app-backend-bwff.onrender.com',
         methods: ["GET", "POST"],
     },
 });
+//Function to get the last messages from a specified room from the database
 function getLastMessagesFromRoom(room) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield knex
+        return yield index_1.knex
             .select("messages.*", "users.name", "users.email", "users.picture")
             .from(MESSAGE_TABLE_NAME)
             .join("users", "messages.from", "=", "users.id")
@@ -56,12 +68,14 @@ function getLastMessagesFromRoom(room) {
             .orderBy("date", "asc");
     });
 }
-// socket connection
+// Handle Socket.IO connection events
 io.on("connection", (socket) => {
+    // Handle a 'new-user' event by emitting the current members to all connected clients
     socket.on("new-user", () => __awaiter(void 0, void 0, void 0, function* () {
-        const members = yield knex(USER_TABLE_NAME).select(`${USER_TABLE_NAME}.*`);
+        const members = yield (0, index_1.knex)(USER_TABLE_NAME).select(`${USER_TABLE_NAME}.*`);
         io.emit("new-user", members);
     }));
+    // Handle a 'join-room' event by having the socket join the specified room and levaing the previous room
     socket.on("join-room", (newRoom, previousRoom) => __awaiter(void 0, void 0, void 0, function* () {
         socket.join(newRoom);
         socket.leave(previousRoom);
@@ -77,8 +91,9 @@ io.on("connection", (socket) => {
         console.log("roomMessages", roomMessages);
         socket.emit("room-messages", roomMessages);
     }));
+    // Handle a 'message-room' event by inserting the message into the database and emitting it to the specified room
     socket.on("message-room", (room, content, sender, time, date) => __awaiter(void 0, void 0, void 0, function* () {
-        let newMessage = (yield knex(MESSAGE_TABLE_NAME)
+        let newMessage = (yield (0, index_1.knex)(MESSAGE_TABLE_NAME)
             .insert({
             content,
             from: sender.id,
@@ -93,23 +108,21 @@ io.on("connection", (socket) => {
             email: sender.email,
             picture: sender.picture,
         };
-        socket.broadcast.emit("new-messages", newMessage);
-        console.log("newmsg", newMessage);
-        // let roomMessages = await getLastMessagesFromRoom(room);
-        // // // sending message to room
-        // io.to(room).emit("room-messages", roomMessages);
-        // socket.broadcast.emit("notifications", room);
+        //Broadcasting the 'new-messages' event to all the rooms except current room. 
+        socket.broadcast.to(room).emit("new-messages", newMessage);
         return;
     }));
+    // Post request to handle Logout
     app.post("/logout", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log("logout route body: ", req.body);
         try {
             const { id } = req.body;
-            yield knex(USER_TABLE_NAME).where({ id: id }).update({
+            // Updating the status of the user who logs out
+            yield (0, index_1.knex)(USER_TABLE_NAME).where({ id: id }).update({
                 status: "offline",
             });
-            // const members = await User.find();
-            const members = yield knex(USER_TABLE_NAME).select(`${USER_TABLE_NAME}.*`);
+            const members = yield (0, index_1.knex)(USER_TABLE_NAME).select(`${USER_TABLE_NAME}.*`);
+            // Broadcasting the status of users 
             socket.broadcast.emit("new-user", members);
             res.status(200).send();
         }
@@ -119,9 +132,11 @@ io.on("connection", (socket) => {
         }
     }));
 });
+//Get request to get rooms
 app.get("/rooms", (req, res) => {
     res.json(rooms);
 });
+// Listening to specified port
 server.listen(PORT, () => {
     console.log("listening to port", PORT);
 });
