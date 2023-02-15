@@ -2,29 +2,32 @@ import React from "react";
 import { Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
-import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
+import { useNavigate } from "react-router-dom";
+import { SliceState } from "../features/userSlice";
 import { useLogoutUserMutation } from "../services/appApi";
 
 // Navigation component
-function Navigation() {
+const Navigation: React.FC = () => {
   // Use the 'user' state from the Redux store
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state: SliceState) => state.user);
   // Use the 'useLogoutUserMutation' hook for logging out the user
   const [logoutUser] = useLogoutUserMutation();
   // Use the 'useNavigate' hook
   const navigate = useNavigate();
-
   // Function to handle logout action by calling the logoutUser function
-  async function handleLogout(e) {
+  async function handleLogout(e: { preventDefault: () => void }) {
     e.preventDefault();
+    if (!user) {
+      return;
+    }
     await logoutUser({ id: user.id });
     // Redirect to home page
     navigate("/");
   }
 
   return (
-    //Navbar 
+    //Navbar
     <Navbar bg="light" expand="lg">
       <Container>
         {/* Link to the home page */}
@@ -81,6 +84,6 @@ function Navigation() {
       </Container>
     </Navbar>
   );
-}
+};
 
 export default Navigation;
