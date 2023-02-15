@@ -101,7 +101,7 @@ io.on("connection", (socket: any) => {
         picture: sender.picture,
       };
 
-      //Broadcasting the 'new-messages' event to all the rooms except current room. 
+      //Broadcasting the 'new-messages' event to all the rooms except current room.
       socket.broadcast.to(room).emit("new-messages", newMessage);
       return;
     }
@@ -118,7 +118,7 @@ io.on("connection", (socket: any) => {
       const members = await knex(USER_TABLE_NAME).select(
         `${USER_TABLE_NAME}.*`
       );
-      // Broadcasting the status of users 
+      // Broadcasting the status of users
       socket.broadcast.emit("new-user", members);
       res.status(200).send();
     } catch (e) {
