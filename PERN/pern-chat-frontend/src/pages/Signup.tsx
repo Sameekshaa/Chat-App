@@ -145,6 +145,7 @@ function Signup() {
             </div>
           </Form>
         </Col>
+        {/* Background column */}
         <Col md={5} className="signup__bg"></Col>
       </Row>
     </Container>
