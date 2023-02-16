@@ -4,7 +4,7 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     plugins: ['@typescript-eslint'],
     root: true,
-    rules: {
+    "rules": {
         "no-undef": "off",
         "no-unused-vars": "off",
         "@typescript-eslint/no-var-requires": "off",
