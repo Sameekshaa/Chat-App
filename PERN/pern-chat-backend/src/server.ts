@@ -3,7 +3,7 @@ const app: Express = express();
 const userRoutes = require("../routes/userRoutes");
 
 /**
- * Learn TypeScript: Convert imports to es6
+ * Convert imports to es6
  */
 import cors from "cors";
 import { knex } from "../config/db/index";
@@ -11,7 +11,7 @@ import dotenv from "dotenv";
 import { LogoutUsers } from "../src/types/instance";
 
 /**
- * Learn TypeScript: Write type for constants
+ * Write type for constants
  */
 const rooms: string[] = ["General", "Fullstack", "Data", "AI"];
 
