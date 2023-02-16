@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React from "react";
 import { io } from "socket.io-client";
 import { UserType } from "../features/userSlice";
@@ -41,16 +42,16 @@ type AppContextType = {
 export const AppContext = React.createContext<AppContextType>({
   socket,
   currentRoom: "",
-  setCurrentRoom: () => {},
+  setCurrentRoom: () => { },
   members: [],
-  setMembers: () => {},
+  setMembers: () => { },
   privateMemberMsg: {
     name: "",
     picture: "",
   },
-  setPrivateMemberMsg: () => {},
+  setPrivateMemberMsg: () => { },
   rooms: [],
-  setRooms: () => {},
+  setRooms: () => { },
   messages: [],
-  setMessages: () => {},
+  setMessages: () => { },
 });

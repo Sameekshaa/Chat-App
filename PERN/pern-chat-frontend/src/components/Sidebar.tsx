@@ -31,7 +31,7 @@ const Sidebar: React.FC = () => {
   console.log("socket", socket); // socket connection
   // console.log("members", members);
 
-  function joinRoom(room: string, isPublic: boolean = true) {
+  function joinRoom(room: string, isPublic = true) {
     // Checking if the user is logged in
     if (!user) {
       return alert("Please login");
