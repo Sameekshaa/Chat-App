@@ -3,5 +3,4 @@
 /.pnp
 
 # misc
-.env
 .env.local
