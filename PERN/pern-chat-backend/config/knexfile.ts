@@ -5,7 +5,7 @@ console.log(
   process.env.DATABASE_CONNECTION_STRING
 );
 
-module.exports = {
+export default {
   client: "pg",
   connection: process.env.DATABASE_CONNECTION_STRING,
   useNullAsDefault: true,

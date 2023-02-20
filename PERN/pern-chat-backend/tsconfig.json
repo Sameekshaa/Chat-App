@@ -6,7 +6,12 @@
     "noImplicitAny": true,
     "sourceMap": true,
     "outDir": "dist",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "@/shared/*": [
+        "../shared/*"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts",
@@ -17,5 +22,8 @@
     "src/server.ts",
     "config/knexfile.ts"
   ],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
 }

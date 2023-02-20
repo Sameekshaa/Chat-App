@@ -33,7 +33,7 @@ export const userSlice = createSlice({
       // if the notification already exists, increment the count
       if (state.newMessages?.[payload]) {
         state.newMessages[payload] = state.newMessages[payload] + 1;
-      // if the notification does not exist, set its count to 1
+        // if the notification does not exist, set its count to 1
       } else {
         state.newMessages[payload] = 1;
       }

@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express";
 const app: Express = express();
 const userRoutes = require("../routes/userRoutes");
+import { UserType } from "@/shared/types";
 
 /**
  * Convert imports to es6
@@ -78,7 +79,7 @@ io.on("connection", (socket: any) => {
     async (
       room: string,
       content: string,
-      sender: any,
+      sender: UserType,
       time: string,
       date: string
     ) => {
